@@ -25,6 +25,7 @@ router.get('/calculate/:studentId', asyncHandler(async (req, res) => {
     data: {
       gpa: Math.round(gpa * 100) / 100,
       totalCredits,
+      gradePoints: Math.round(totalGradePoints * 100) / 100,
       totalCourses: courses.length,
       courses,
       semesters,

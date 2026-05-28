@@ -1,35 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import toast from 'react-hot-toast';
-import { useProfile, useUpdateProfile, useDownloadBackup } from '../../hooks/api';
-import api from '../../hooks/api';
+import { useProfile, useUpdateProfile, useUploadPhoto } from '../../hooks/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function ProfileSection() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const { data: profile, isLoading } = useProfile();
-  const updateProfile = useUpdateProfile();
-  const downloadBackup = useDownloadBackup();
+  const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({});
-  const [isDirty, setIsDirty] = useState(false);
-  const [resetConfirm, setResetConfirm] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const { data: profile } = useProfile();
+  const updateProfile = useUpdateProfile();
+  const uploadPhoto = useUploadPhoto();
 
   useEffect(() => {
-    if (profile) {
-      setForm({
-        name: profile.name || '',
-        college: profile.college || '',
-        semester: profile.semester || 1,
-        year: profile.year || 1,
-        gpa_scale: profile.gpa_scale || 4.0,
-        focus_goal: profile.focus_goal || 4,
-        attendance_threshold: profile.attendance_threshold || 75,
-        timezone: profile.timezone || 'America/New_York',
-      });
-    }
+    if (profile) setForm(profile);
   }, [profile]);
 
   useEffect(() => {
@@ -37,153 +25,122 @@ function ProfileSection() {
       if (titleRef.current) {
         gsap.fromTo(titleRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: titleRef.current, start: 'top 85%' } });
       }
-    });
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
-  const handleChange = (key, value) => {
-    setForm(prev => ({ ...prev, [key]: value }));
-    setIsDirty(true);
-  };
-
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     updateProfile.mutate(form);
-    setIsDirty(false);
+    setEditing(false);
   };
 
-  const handleReset = async (filename) => {
-    try {
-      await api.delete(`/backup/reset/${filename}`, { data: { confirm: `reset-${filename}` } });
-      toast.success(`Reset ${filename}`);
-      setResetConfirm(null);
-    } catch (err) {
-      toast.error('Reset failed');
-    }
-  };
+  const rawPhotoUrl = profile?.profile_photo_url;
+  const photoUrl = rawPhotoUrl
+    ? rawPhotoUrl.startsWith('http') ? rawPhotoUrl : `http://localhost:3001${rawPhotoUrl}`
+    : null;
 
-  if (isLoading) {
-    return (
-      <section ref={sectionRef} className="py-28 lg:py-36">
-        <div className="section-container">
-          <div className="skeleton h-96 w-full" />
-        </div>
-      </section>
-    );
-  }
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) uploadPhoto.mutate(file);
+  };
 
   return (
-    <section ref={sectionRef} className="relative py-28 lg:py-36 bg-gradient-to-b from-cream via-indigo-50/20 to-ivory">
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
       <div className="section-container">
-        <div ref={titleRef} className="mb-12">
-          <h2 className="section-title">Customize<br />Your OS</h2>
-          <p className="section-subtitle mt-4">Everything you need to configure your experience.</p>
+        <div ref={titleRef} className="flex items-center justify-between mb-10">
+          <div>
+            <p className="section-eyebrow">You</p>
+            <h2 className="section-heading">Student *profile*</h2>
+            <p className="section-subtext">Manage your personal information.</p>
+          </div>
+          <button onClick={() => setEditing(!editing)} className="btn-primary text-xs px-5 py-2.5">
+            {editing ? 'View' : '✏️ Edit'}
+          </button>
         </div>
 
-        <div className="max-w-2xl mx-auto space-y-6">
-          {/* Personal Info */}
-          <div className="glass-card-strong p-6">
-            <h3 className="text-lg font-display font-semibold mb-6" style={{ color: '#1a1a2e' }}>Personal Information</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Name</label>
-                <input value={form.name || ''} onChange={e => handleChange('name', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 outline-none text-sm transition-all" />
+        <div className="glass-card p-8">
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            {/* Photo */}
+            <div className="flex-shrink-0">
+              <div className="w-28 h-28 rounded-2xl bg-surface border border-stroke overflow-hidden relative group cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}>
+                {photoUrl ? (
+                  <img src={photoUrl} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="text-2xl font-display italic text-muted">
+                      {profile?.name?.charAt(0) || '?'}
+                    </span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="text-xs text-white">Upload</span>
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">College</label>
-                <input value={form.college || ''} onChange={e => handleChange('college', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Semester</label>
-                <input type="number" value={form.semester || 1} onChange={e => handleChange('semester', parseInt(e.target.value))} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" min={1} max={12} />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Year</label>
-                <input type="number" value={form.year || 1} onChange={e => handleChange('year', parseInt(e.target.value))} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" min={1} max={6} />
-              </div>
+              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
             </div>
-          </div>
 
-          {/* Academic Settings */}
-          <div className="glass-card-strong p-6">
-            <h3 className="text-lg font-display font-semibold mb-6" style={{ color: '#1a1a2e' }}>Academic Settings</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">GPA Scale</label>
-                <select value={form.gpa_scale || 4.0} onChange={e => handleChange('gpa_scale', parseFloat(e.target.value))} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm">
-                  <option value={4.0}>4.0 Scale</option>
-                  <option value={10.0}>10.0 Scale</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Focus Goal (pomodoros/day)</label>
-                <input type="number" value={form.focus_goal || 4} onChange={e => handleChange('focus_goal', parseInt(e.target.value))} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" min={1} max={20} />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Attendance Threshold (%)</label>
-                <input type="number" value={form.attendance_threshold || 75} onChange={e => handleChange('attendance_threshold', parseInt(e.target.value))} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" min={50} max={100} />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Timezone</label>
-                <select value={form.timezone || 'America/New_York'} onChange={e => handleChange('timezone', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm">
-                  <option value="America/New_York">Eastern Time (US)</option>
-                  <option value="America/Chicago">Central Time (US)</option>
-                  <option value="America/Denver">Mountain Time (US)</option>
-                  <option value="America/Los_Angeles">Pacific Time (US)</option>
-                  <option value="Europe/London">London (GMT)</option>
-                  <option value="Asia/Kolkata">India (IST)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Data Management */}
-          <div className="glass-card-strong p-6">
-            <h3 className="text-lg font-display font-semibold mb-4" style={{ color: '#1a1a2e' }}>Data Management</h3>
-            <div className="flex flex-wrap gap-3">
-              <button onClick={downloadBackup} className="px-5 py-3 rounded-2xl text-sm font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-all">
-                ⬇️ Download Backup
-              </button>
-              {['timetable', 'habits', 'class_notes', 'focus_sessions'].map(file => (
-                <div key={file}>
-                  <button onClick={() => setResetConfirm(file)} className="px-5 py-3 rounded-2xl text-sm font-medium bg-red-50 text-red-400 hover:bg-red-100 transition-all">
-                    🗑️ Reset {file.replace('_', ' ')}
-                  </button>
-                  {resetConfirm === file && (
-                    <div className="mt-2 flex items-center gap-2">
-                      <p className="text-xs text-red-400">Confirm reset?</p>
-                      <button onClick={() => handleReset(file)} className="px-3 py-1 rounded-lg text-xs font-medium bg-red-500 text-white">Yes</button>
-                      <button onClick={() => setResetConfirm(null)} className="px-3 py-1 rounded-lg text-xs font-medium bg-indigo-50 text-indigo-400">No</button>
+            {/* Info */}
+            <div className="flex-1 w-full">
+              {editing ? (
+                <form onSubmit={handleSave} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Name" value={form.name || ''} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                      className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                    <input type="text" placeholder="College" value={form.college || ''} onChange={e => setForm(p => ({ ...p, college: e.target.value }))}
+                      className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                    <input type="number" placeholder="Semester" value={form.semester || ''} onChange={e => setForm(p => ({ ...p, semester: Number(e.target.value) }))}
+                      className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                    <input type="text" placeholder="Subjects (comma separated)" value={form.subjects?.join(', ') || ''} onChange={e => setForm(p => ({ ...p, subjects: e.target.value.split(',').map(s => s.trim()) }))}
+                      className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                  </div>
+                  <div className="flex gap-3 pt-2">
+                    <button type="submit" disabled={updateProfile.isPending}
+                      className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90 disabled:opacity-40">
+                      {updateProfile.isPending ? 'Saving...' : 'Save'}
+                    </button>
+                    <button type="button" onClick={() => setEditing(false)}
+                      className="px-6 py-3 rounded-xl text-sm text-muted border border-stroke hover:text-text-primary transition-all">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-muted uppercase tracking-wider">Name</p>
+                    <p className="text-lg font-medium text-text-primary">{profile?.name || 'Not set'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted uppercase tracking-wider">College</p>
+                    <p className="text-base text-text-primary">{profile?.college || 'Not set'}</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-xs text-muted uppercase tracking-wider">Semester</p>
+                      <p className="text-base text-text-primary">{profile?.semester || 'Not set'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted uppercase tracking-wider">Year</p>
+                      <p className="text-base text-text-primary">{profile?.year || 'Not set'}</p>
+                    </div>
+                  </div>
+                  {profile?.subjects?.length > 0 && (
+                    <div>
+                      <p className="text-xs text-muted uppercase tracking-wider">Subjects</p>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {profile.subjects.map((s, i) => (
+                          <span key={i} className="text-[10px] px-2 py-1 rounded-md bg-stroke/50 text-muted">{s}</span>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
-              ))}
+              )}
             </div>
           </div>
-
-          {/* Subjects */}
-          <div className="glass-card-strong p-6">
-            <h3 className="text-lg font-display font-semibold mb-4" style={{ color: '#1a1a2e' }}>Subjects</h3>
-            <p className="text-xs text-indigo-400/60 mb-3">Enter your subjects separated by commas.</p>
-            <input
-              value={(form.subjects || []).join(', ')}
-              onChange={e => handleChange('subjects', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-              className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm"
-              placeholder="Data Structures, Algorithms, Mathematics, Physics"
-            />
-          </div>
         </div>
-
-        {/* Floating Save Button */}
-        {isDirty && (
-          <div className="fixed bottom-8 right-8 z-40 animate-bounce">
-            <button onClick={handleSave}
-              className="px-8 py-4 rounded-2xl text-sm font-medium text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl"
-              style={{ background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)' }}
-            >
-              💾 Save All Changes
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );

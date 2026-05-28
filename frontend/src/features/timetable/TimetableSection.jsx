@@ -1,104 +1,120 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTimetable, useCreateTimetableEntry, useDeleteTimetableEntry } from '../../hooks/api';
+import { useTimetable, useCreateTimetableEntry, useUpdateTimetableEntry, useDeleteTimetableEntry } from '../../hooks/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const SUBJECT_COLORS = ['#6366f1', '#F5A623', '#FF6B6B', '#00C2A8', '#8B5CF6', '#EC4899', '#F97316', '#14B8A6'];
-const SUBJECT_ICONS = { 'Mathematics': '📐', 'Physics': '⚛️', 'Chemistry': '🧪', 'Data Structures': '🗃️', 'Algorithms': '🔢', 'English': '📖', 'History': '📜', 'Biology': '🧬', 'default': '📚' };
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const HOURS = Array.from({ length: 14 }, (_, i) => `${String(i + 7).padStart(2, '0')}:00`);
+
+function getWeekDates(currentDate) {
+  const start = new Date(currentDate);
+  start.setDate(start.getDate() - start.getDay());
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    return d;
+  });
+}
 
 function TimetableSection() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const gridRef = useRef(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ day_of_week: new Date().getDay(), subject_name: '', start_time: '', end_time: '', room: '', professor: '', color_tag: '#6366f1' });
+  const [editingSlot, setEditingSlot] = useState(null);
+  const [form, setForm] = useState({ subject_name: '', start_time: '09:00', end_time: '10:00', room: '', professor: '', color_tag: '#3B1FA8', day_of_week: 1 });
 
   const { data: timetable = [] } = useTimetable();
   const createEntry = useCreateTimetableEntry();
+  const updateEntry = useUpdateTimetableEntry();
   const deleteEntry = useDeleteTimetableEntry();
-  const today = new Date().getDay();
+
+  const weekDates = useMemo(() => getWeekDates(currentDate), [currentDate]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (titleRef.current) {
-        gsap.fromTo(titleRef.current, { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: titleRef.current, start: 'top 85%' } });
+        gsap.fromTo(titleRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: titleRef.current, start: 'top 85%' } });
       }
-      if (gridRef.current) {
-        gsap.fromTo(gridRef.current, { x: 100, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: gridRef.current, start: 'top 80%' } });
-      }
-    });
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
+  const getSlotsForDay = (dayIndex) => timetable.filter(s => s.day_of_week === dayIndex);
+
+  const handleCreate = () => {
+    setEditingSlot(null);
+    setForm({ subject_name: '', start_time: '09:00', end_time: '10:00', room: '', professor: '', color_tag: '#3B1FA8', day_of_week: 1 });
+    setShowModal(true);
+  };
+
+  const handleEdit = (slot) => {
+    setEditingSlot(slot);
+    setForm({ subject_name: slot.subject_name, start_time: slot.start_time, end_time: slot.end_time, room: slot.room || '', professor: slot.professor || '', color_tag: slot.color_tag || '#3B1FA8', day_of_week: slot.day_of_week });
+    setShowModal(true);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    createEntry.mutate(form);
-    setShowModal(false);
-    setForm({ day_of_week: new Date().getDay(), subject_name: '', start_time: '', end_time: '', room: '', professor: '', color_tag: '#6366f1' });
-  };
-
-  const getHours = () => {
-    const hours = [];
-    for (let i = 7; i <= 20; i++) {
-      hours.push(`${i.toString().padStart(2, '0')}:00`);
+    if (editingSlot) {
+      updateEntry.mutate({ id: editingSlot.id, ...form });
+    } else {
+      createEntry.mutate(form);
     }
-    return hours;
+    setShowModal(false);
   };
-
-  const getSubjectIcon = (name) => SUBJECT_ICONS[name] || SUBJECT_ICONS.default;
 
   return (
-    <section ref={sectionRef} className="relative py-28 lg:py-36">
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
       <div className="section-container">
-        <div ref={titleRef} className="mb-12 lg:mb-16">
-          <h2 className="section-title">Your Day,<br />Perfectly Mapped</h2>
-          <p className="section-subtitle mt-4">Every class, every room, every moment accounted for.</p>
-          <button onClick={() => setShowModal(true)} className="mt-6 px-6 py-3 rounded-2xl text-sm font-medium transition-all duration-300 hover:shadow-lg hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)', color: 'white' }}>
+        <div ref={titleRef} className="flex items-center justify-between mb-10">
+          <div>
+            <p className="section-eyebrow">Schedule</p>
+            <h2 className="section-heading">Weekly *timetable*</h2>
+          </div>
+          <button onClick={handleCreate} className="btn-primary text-xs px-5 py-2.5">
             + Add Class
           </button>
         </div>
 
-        {/* Weekly grid */}
-        <div ref={gridRef} className="overflow-x-auto pb-4">
-          <div className="min-w-[800px]">
-            {/* Day headers */}
-            <div className="grid grid-cols-7 gap-2 mb-3">
-              {DAYS.map((day, i) => (
-                <div key={day} className={`text-center py-3 px-2 rounded-xl text-sm font-medium transition-all ${
-                  i === today ? 'bg-indigo-50 text-indigo-600 border-2 border-indigo-200' : 'text-indigo-400/60'
-                }`}>
-                  {day.slice(0, 3)}
-                  {i === today && <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />}
-                </div>
-              ))}
-            </div>
+        {/* Calendar Grid */}
+        <div className="glass-card overflow-hidden">
+          {/* Header with day names */}
+          <div className="grid grid-cols-7 border-b border-stroke">
+            {weekDates.map((date, i) => (
+              <div key={i} className="p-3 text-center border-r border-stroke last:border-r-0">
+                <p className="text-[10px] text-muted uppercase tracking-wider">{DAYS[date.getDay()].slice(0, 3)}</p>
+                <p className="text-lg font-semibold text-text-primary mt-0.5">{date.getDate()}</p>
+              </div>
+            ))}
+          </div>
 
-            {/* Time slots */}
-            {getHours().map((hour, idx) => (
-              <div key={hour} className="grid grid-cols-7 gap-2 mb-1.5">
-                <div className="text-xs text-indigo-400/40 font-mono pt-2 text-center">{hour}</div>
-                {DAYS.map((_, dayIdx) => {
-                  const classes = timetable.filter(t => t.day_of_week === dayIdx && t.start_time && t.start_time.startsWith(hour.slice(0, 2)));
+          {/* Time rows */}
+          <div className="overflow-y-auto" style={{ maxHeight: '500px' }}>
+            {HOURS.map((hour, hi) => (
+              <div key={hi} className="grid grid-cols-7 border-b border-stroke hover:bg-surface/30 transition-colors">
+                {/* Time label */}
+                <div className="p-2 border-r border-stroke flex items-start justify-center pt-3">
+                  <span className="text-[10px] text-muted">{hour}</span>
+                </div>
+
+                {/* Day columns */}
+                {weekDates.map((_, di) => {
+                  const slots = getSlotsForDay(di).filter(s => s.start_time === hour);
                   return (
-                    <div key={dayIdx} className={`min-h-[48px] rounded-xl p-1.5 relative transition-all ${
-                      dayIdx === today ? 'bg-indigo-50/30 ring-1 ring-indigo-100' : 'bg-white/40'
-                    }`}>
-                      {classes.map(cls => (
-                        <div key={cls.id} className="group relative p-1.5 rounded-lg text-xs cursor-pointer hover-lift"
-                          style={{ background: cls.color_tag + '15', borderLeft: `3px solid ${cls.color_tag || '#6366f1'}` }}
+                    <div key={di} className="p-1 border-r border-stroke last:border-r-0 min-h-[40px] relative">
+                      {slots.map((slot, si) => (
+                        <div
+                          key={si}
+                          className="text-[10px] px-2 py-1 rounded-md mb-0.5 cursor-pointer transition-all hover:brightness-125 truncate"
+                          style={{ background: (slot.color_tag || '#3B1FA8') + '25', color: slot.color_tag || '#3B1FA8', borderLeft: `3px solid ${slot.color_tag || '#3B1FA8'}` }}
+                          onClick={() => handleEdit(slot)}
+                          title={`${slot.subject_name}\n${slot.start_time}-${slot.end_time}\n${slot.room ? 'Room: '+slot.room : ''}`}
                         >
-                          <div className="flex items-center gap-1">
-                            <span>{getSubjectIcon(cls.subject_name)}</span>
-                            <span className="font-medium truncate" style={{ color: '#1a1a2e' }}>{cls.subject_name}</span>
-                          </div>
-                          <div className="text-[10px] text-indigo-400/50">{cls.room || ''}</div>
-                          <button onClick={() => deleteEntry.mutate(cls.id)}
-                            className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-400 text-white text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            ×
-                          </button>
+                          {slot.subject_name}
                         </div>
                       ))}
                     </div>
@@ -110,53 +126,41 @@ function TimetableSection() {
         </div>
       </div>
 
-      {/* Add Class Modal */}
+      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm" onClick={() => setShowModal(false)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowModal(false)}>
           <div className="glass-card-strong p-8 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-2xl font-display font-semibold mb-6">Add Class</h3>
+            <h3 className="text-xl font-display italic text-text-primary mb-6">
+              {editingSlot ? 'Edit Class' : 'Add Class'}
+            </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Subject</label>
-                <input value={form.subject_name} onChange={e => setForm({...form, subject_name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 outline-none transition-all text-sm" placeholder="e.g. Data Structures" required />
+              <input type="text" placeholder="Subject Name" value={form.subject_name} onChange={e => setForm(p => ({ ...p, subject_name: e.target.value }))} required
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+              <div className="grid grid-cols-2 gap-3">
+                <input type="time" value={form.start_time} onChange={e => setForm(p => ({ ...p, start_time: e.target.value }))}
+                  className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary focus:outline-none focus:border-text-primary/30 transition-all" />
+                <input type="time" value={form.end_time} onChange={e => setForm(p => ({ ...p, end_time: e.target.value }))}
+                  className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary focus:outline-none focus:border-text-primary/30 transition-all" />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Day</label>
-                  <select value={form.day_of_week} onChange={e => setForm({...form, day_of_week: parseInt(e.target.value)})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm">
-                    {DAYS.map((d, i) => <option key={d} value={i}>{d}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Color</label>
-                  <input type="color" value={form.color_tag} onChange={e => setForm({...form, color_tag: e.target.value})} className="w-full h-10 rounded-xl border border-indigo-100 cursor-pointer" />
-                </div>
+                <input type="text" placeholder="Room" value={form.room} onChange={e => setForm(p => ({ ...p, room: e.target.value }))}
+                  className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                <input type="text" placeholder="Professor" value={form.professor} onChange={e => setForm(p => ({ ...p, professor: e.target.value }))}
+                  className="px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Start Time</label>
-                  <input type="time" value={form.start_time} onChange={e => setForm({...form, start_time: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" required />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">End Time</label>
-                  <input type="time" value={form.end_time} onChange={e => setForm({...form, end_time: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" required />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Room</label>
-                  <input value={form.room} onChange={e => setForm({...form, room: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" placeholder="Room 301" />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Professor</label>
-                  <input value={form.professor} onChange={e => setForm({...form, professor: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" placeholder="Dr. Smith" />
-                </div>
-              </div>
+              <select value={form.day_of_week} onChange={e => setForm(p => ({ ...p, day_of_week: Number(e.target.value) }))}
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary focus:outline-none focus:border-text-primary/30 transition-all">
+                {DAYS.map((day, i) => <option key={i} value={i}>{day}</option>)}
+              </select>
+              <input type="color" value={form.color_tag} onChange={e => setForm(p => ({ ...p, color_tag: e.target.value }))}
+                className="w-full h-10 rounded-xl cursor-pointer bg-surface border border-stroke" />
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="flex-1 py-3 rounded-xl text-sm font-medium text-white transition-all hover:shadow-lg" style={{ background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)' }}>
-                  Save Class
+                <button type="submit" disabled={createEntry.isPending || updateEntry.isPending}
+                  className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90 disabled:opacity-40">
+                  {createEntry.isPending || updateEntry.isPending ? 'Saving...' : editingSlot ? 'Update' : 'Create'}
                 </button>
-                <button type="button" onClick={() => setShowModal(false)} className="px-6 py-3 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-50 hover:bg-indigo-100 transition-all">
+                <button type="button" onClick={() => setShowModal(false)}
+                  className="px-6 py-3 rounded-xl text-sm text-muted border border-stroke hover:text-text-primary transition-all">
                   Cancel
                 </button>
               </div>

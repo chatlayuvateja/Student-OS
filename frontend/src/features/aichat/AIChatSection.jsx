@@ -20,8 +20,7 @@ function AIChatSection() {
 
   useEffect(() => {
     if (history.length > 0 && localMessages.length === 0) {
-      const msgs = history.map(h => ({ role: h.role, content: h.content }));
-      setLocalMessages(msgs);
+      setLocalMessages(history.map(h => ({ role: h.role, content: h.content })));
     }
   }, [history]);
 
@@ -33,7 +32,6 @@ function AIChatSection() {
       if (chatRef.current) {
         gsap.fromTo(chatRef.current, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: chatRef.current, start: 'top 80%' } });
       }
-      // Animate brain SVG paths
       if (brainRef.current) {
         const paths = brainRef.current.querySelectorAll('path, circle');
         gsap.fromTo(paths, { strokeDashoffset: 500, strokeDasharray: 500 }, {
@@ -71,62 +69,63 @@ function AIChatSection() {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-28 lg:py-36 bg-gradient-to-b from-cream via-indigo-50/20 to-cream">
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
       <div className="section-container">
-        <div ref={titleRef} className="mb-12">
-          <h2 className="section-title">Your Personal<br />Academic Intelligence</h2>
-          <p className="section-subtitle mt-4">Powered by AI. Personalized to you.</p>
+        <div ref={titleRef} className="mb-10">
+          <p className="section-eyebrow">AI Assistant</p>
+          <h2 className="section-heading">Your personal *intelligence*</h2>
+          <p className="section-subtext">Powered by Gemini AI. Personalized to you.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* Left - Brain illustration */}
+          {/* Brain illustration */}
           <div ref={brainRef} className="hidden lg:flex lg:w-[400px] flex-shrink-0 items-center justify-center py-8">
-            <svg viewBox="0 0 200 200" className="w-64 h-64" fill="none" stroke="rgba(59, 31, 168, 0.15)" strokeWidth="1.5">
-              <circle cx="100" cy="100" r="60" stroke="rgba(59, 31, 168, 0.2)" strokeWidth="2" />
-              <circle cx="100" cy="100" r="40" stroke="rgba(245, 166, 35, 0.15)" strokeWidth="1" />
-              <circle cx="100" cy="100" r="80" stroke="rgba(59, 31, 168, 0.08)" strokeWidth="1" />
-              <path d="M100 40 Q130 50 140 80 Q150 110 130 130 Q110 150 100 160" />
-              <path d="M100 40 Q70 50 60 80 Q50 110 70 130 Q90 150 100 160" />
-              <path d="M60 80 Q40 70 30 80 Q20 90 40 100" stroke="rgba(245, 166, 35, 0.2)" />
-              <path d="M140 80 Q160 70 170 80 Q180 90 160 100" stroke="rgba(245, 166, 35, 0.2)" />
-              <path d="M75 55 L85 65 M115 55 L125 65" stroke="rgba(0, 194, 168, 0.2)" strokeWidth="1.5" />
-              <circle cx="100" cy="75" r="3" fill="rgba(59, 31, 168, 0.3)" stroke="none" />
-              <circle cx="100" cy="125" r="3" fill="rgba(59, 31, 168, 0.3)" stroke="none" />
-              <circle cx="75" cy="100" r="3" fill="rgba(59, 31, 168, 0.3)" stroke="none" />
-              <circle cx="125" cy="100" r="3" fill="rgba(59, 31, 168, 0.3)" stroke="none" />
+            <svg viewBox="0 0 200 200" className="w-64 h-64" fill="none" stroke="rgba(137, 170, 204, 0.15)" strokeWidth="1.5">
+              <circle cx="100" cy="100" r="60" stroke="rgba(137, 170, 204, 0.2)" strokeWidth="2" />
+              <circle cx="100" cy="100" r="40" stroke="rgba(78, 133, 191, 0.15)" strokeWidth="1" />
+              <circle cx="100" cy="100" r="80" stroke="rgba(137, 170, 204, 0.08)" strokeWidth="1" />
+              <path d="M100 40Q130 50 140 80Q150 110 130 130Q110 150 100 160" />
+              <path d="M100 40Q70 50 60 80Q50 110 70 130Q90 150 100 160" />
+              <path d="M60 80Q40 70 30 80Q20 90 40 100" stroke="rgba(78, 133, 191, 0.2)" />
+              <path d="M140 80Q160 70 170 80Q180 90 160 100" stroke="rgba(78, 133, 191, 0.2)" />
+              <path d="M75 55L85 65M115 55L125 65" stroke="rgba(0, 194, 168, 0.2)" strokeWidth="1.5" />
+              <circle cx="100" cy="75" r="3" fill="rgba(137, 170, 204, 0.3)" stroke="none" />
+              <circle cx="100" cy="125" r="3" fill="rgba(137, 170, 204, 0.3)" stroke="none" />
+              <circle cx="75" cy="100" r="3" fill="rgba(137, 170, 204, 0.3)" stroke="none" />
+              <circle cx="125" cy="100" r="3" fill="rgba(137, 170, 204, 0.3)" stroke="none" />
             </svg>
           </div>
 
-          {/* Right - Chat panel */}
+          {/* Chat panel */}
           <div ref={chatRef} className="flex-1 w-full">
-            <div className="glass-card-strong overflow-hidden" style={{ maxHeight: '600px', display: 'flex', flexDirection: 'column' }}>
+            <div className="glass-card overflow-hidden" style={{ maxHeight: '600px', display: 'flex', flexDirection: 'column' }}>
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ maxHeight: '480px' }}>
                 {localMessages.length === 0 && !isTyping && (
                   <div className="text-center py-12">
-                    <p className="text-indigo-400/40 text-sm">Start a conversation with your AI study assistant.</p>
-                    <p className="text-indigo-400/30 text-xs mt-1">Ask to explain concepts, create study plans, or quiz you.</p>
+                    <p className="text-muted text-sm">Start a conversation with your AI study assistant.</p>
+                    <p className="text-muted/50 text-xs mt-1">Ask to explain concepts, create study plans, or quiz you.</p>
                   </div>
                 )}
                 {localMessages.map((msg, i) => (
                   <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] lg:max-w-[70%] p-4 rounded-2xl ${
                       msg.role === 'user'
-                        ? 'text-white'
-                        : 'bg-white shadow-sm border border-indigo-50'
+                        ? 'text-bg'
+                        : 'bg-surface border border-stroke'
                     }`}
-                      style={msg.role === 'user' ? { background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)' } : {}}
+                      style={msg.role === 'user' ? { background: 'linear-gradient(135deg, #89AACC, #4E85BF)' } : {}}
                     >
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap text-text-primary">{msg.content}</p>
                     </div>
                   </div>
                 ))}
                 {isTyping && (
                   <div className="flex justify-start">
-                    <div className="bg-white shadow-sm border border-indigo-50 p-4 rounded-2xl flex gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-indigo-300 animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <div className="bg-surface border border-stroke p-4 rounded-2xl flex gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-muted animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 rounded-full bg-text-primary/50 animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 rounded-full bg-muted animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 )}
@@ -134,18 +133,18 @@ function AIChatSection() {
               </div>
 
               {/* Input */}
-              <form onSubmit={handleSend} className="p-4 border-t border-indigo-50">
+              <form onSubmit={handleSend} className="p-4 border-t border-stroke">
                 <div className="flex gap-3">
                   <input
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     placeholder="Ask anything about your studies..."
-                    className="flex-1 px-5 py-3.5 rounded-2xl bg-indigo-50/50 border border-indigo-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 outline-none text-sm transition-all"
+                    className="flex-1 px-5 py-3.5 rounded-2xl bg-surface/50 border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all text-sm"
                     disabled={isTyping}
                   />
                   <button type="submit" disabled={isTyping || !input.trim()}
-                    className="px-6 py-3.5 rounded-2xl text-white text-sm font-medium transition-all duration-300 hover:shadow-lg disabled:opacity-40"
-                    style={{ background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)' }}
+                    className="px-6 py-3.5 rounded-2xl text-sm font-medium transition-all duration-300 hover:shadow-lg disabled:opacity-40"
+                    style={{ background: 'linear-gradient(135deg, #89AACC, #4E85BF)', color: '#000' }}
                   >
                     Send
                   </button>

@@ -26,7 +26,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           duration: 3000,
         }}
       />
-      <div className="grain-overlay" />
     </QueryClientProvider>
   </React.StrictMode>
 );

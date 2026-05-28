@@ -80,6 +80,14 @@ export function useCreateTimetableEntry() {
   });
 }
 
+export function useUpdateTimetableEntry() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...updates }) => putData(`/timetable/${id}`, { ...updates, student_id: STUDENT_ID }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['timetable'] }); toast.success('Class updated'); },
+  });
+}
+
 export function useDeleteTimetableEntry() {
   const qc = useQueryClient();
   return useMutation({
@@ -206,6 +214,28 @@ export function useDeleteNote() {
   });
 }
 
+export function useUploadNoteFile() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ file, title, subject }) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', title || file.name);
+      formData.append('subject', subject || '');
+      formData.append('student_id', STUDENT_ID);
+      const { data } = await api.post('/notes/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return data.data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['notes'] });
+      toast.success('File uploaded successfully');
+    },
+    onError: () => toast.error('Upload failed. Check file type and size.'),
+  });
+}
+
 // === Courses / CGPA ===
 export function useCourses() {
   return useQuery({ queryKey: ['courses'], queryFn: () => fetchData(`/courses/${STUDENT_ID}`) });
@@ -279,7 +309,13 @@ export function useMarkAttendance() {
 
 // === Resources ===
 export function useResources() {
-  return useQuery({ queryKey: ['resources'], queryFn: () => fetchData(`/resources/${STUDENT_ID}`) });
+  return useQuery({
+    queryKey: ['resources'],
+    queryFn: async () => {
+      const data = await fetchData(`/resources/${STUDENT_ID}`);
+      return data.resources || [];
+    },
+  });
 }
 
 export function useCreateResource() {

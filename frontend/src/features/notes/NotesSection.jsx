@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useNotes, useCreateNote, useUpdateNote, useDeleteNote } from '../../hooks/api';
+import { useNotes, useCreateNote, useUpdateNote, useDeleteNote, useUploadNoteFile } from '../../hooks/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -9,190 +9,213 @@ function NotesSection() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const gridRef = useRef(null);
-  const [search, setSearch] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  const [expandedNote, setExpandedNote] = useState(null);
-  const [showEditor, setShowEditor] = useState(false);
-  const [editForm, setEditForm] = useState({ title: '', content: '', subject: '' });
-  const [editingNote, setEditingNote] = useState(null);
-  const [examMode, setExamMode] = useState(false);
-  const searchTimeout = useRef(null);
+  const [editNote, setEditNote] = useState(null);
+  const [form, setForm] = useState({ title: '', content: '', subject: 'General', color: '#89AACC', tags_array: [] });
+  const [showCreate, setShowCreate] = useState(false);
+
+  // File upload states
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadForm, setUploadForm] = useState({ title: '', subject: '' });
+  const [uploadFile, setUploadFile] = useState(null);
+  const fileUploadRef = useRef(null);
 
   const { data: notes = [] } = useNotes();
   const createNote = useCreateNote();
   const updateNote = useUpdateNote();
   const deleteNote = useDeleteNote();
-
-  const subjects = useMemo(() => {
-    const s = new Set(notes.map(n => n.subject).filter(Boolean));
-    return [...s];
-  }, [notes]);
-
-  const filteredNotes = useMemo(() => {
-    let result = notes;
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(n =>
-        (n.title && n.title.toLowerCase().includes(q)) ||
-        (n.content && n.content.toLowerCase().includes(q))
-      );
-    }
-    if (selectedSubject) {
-      result = result.filter(n => n.subject === selectedSubject);
-    }
-    return result;
-  }, [notes, search, selectedSubject]);
+  const uploadNoteFile = useUploadNoteFile();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (titleRef.current) {
         gsap.fromTo(titleRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: titleRef.current, start: 'top 85%' } });
       }
-    });
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    if (gridRef.current) {
-      gsap.fromTo(gridRef.current.querySelectorAll('.note-card'), { y: 30, opacity: 0 }, {
-        y: 0, opacity: 1, stagger: 0.04, duration: 0.5, ease: 'power3.out',
-        scrollTrigger: { trigger: gridRef.current, start: 'top 85%' },
-      });
-    }
-  }, [filteredNotes]);
-
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    clearTimeout(searchTimeout.current);
-    searchTimeout.current = setTimeout(() => setSearch(value), 300);
-  };
-
   const handleCreate = () => {
-    setEditingNote(null);
-    setEditForm({ title: '', content: '', subject: '' });
-    setShowEditor(true);
+    setEditNote(null);
+    setForm({ title: '', content: '', subject: 'General', color: '#89AACC', tags_array: [] });
+    setShowCreate(true);
   };
 
   const handleEdit = (note) => {
-    setEditingNote(note);
-    setEditForm({ title: note.title, content: note.content, subject: note.subject });
-    setShowEditor(true);
+    setEditNote(note);
+    setForm({ title: note.title || '', content: note.content || '', subject: note.subject || 'General', color: note.color || '#89AACC', tags_array: note.tags_array || [] });
+    setShowCreate(true);
   };
 
-  const handleSave = () => {
-    if (editingNote) {
-      updateNote.mutate({ id: editingNote.id, ...editForm });
+  const handleSave = (e) => {
+    e.preventDefault();
+    if (editNote) {
+      updateNote.mutate({ id: editNote.id, ...form });
     } else {
-      createNote.mutate(editForm);
+      createNote.mutate(form);
     }
-    setShowEditor(false);
-    setEditingNote(null);
+    setShowCreate(false);
   };
 
-  const handleDelete = (id) => {
-    deleteNote.mutate(id);
-    setExpandedNote(null);
+  const handledDelete = (note) => {
+    if (confirm('Delete this note?')) deleteNote.mutate(note.id);
   };
-
-  const truncate = (text, max = 100) => text && text.length > max ? text.slice(0, max) + '...' : text;
 
   return (
-    <section ref={sectionRef} className={`relative py-28 lg:py-36 transition-all duration-500 ${examMode ? 'bg-ivory' : 'bg-gradient-to-b from-cream via-soft-peach/20 to-cream'}`}>
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
       <div className="section-container">
-        <div ref={titleRef} className="mb-12">
-          <h2 className="section-title">Your Knowledge<br />Library</h2>
-          <p className="section-subtitle mt-4">Everything you've learned, beautifully organized.</p>
-          <div className="flex flex-wrap gap-3 mt-6">
-            <input
-              onChange={handleSearch}
-              placeholder="Search notes..."
-              className="px-5 py-3 rounded-2xl bg-white border border-indigo-100 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 outline-none text-sm w-64 transition-all"
-            />
-            <button onClick={handleCreate} className="px-6 py-3 rounded-2xl text-sm font-medium text-white transition-all duration-300 hover:shadow-lg hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)' }}>
-              + New Note
-            </button>
-            <button onClick={() => setExamMode(!examMode)} className={`px-4 py-3 rounded-2xl text-sm font-medium transition-all ${examMode ? 'bg-indigo-100 text-indigo-600' : 'bg-white text-indigo-400 border border-indigo-100'}`}>
-              {examMode ? '📖 Exam Mode On' : '📖 Exam Mode'}
-            </button>
+        <div ref={titleRef} className="flex items-center justify-between mb-10">
+          <div>
+            <p className="section-eyebrow">Notes</p>
+            <h2 className="section-heading">Class *notes*</h2>
+            <p className="section-subtext">Capture and organize your learning.</p>
           </div>
-          {/* Subject filters */}
-          <div className="flex gap-2 mt-4 flex-wrap">
-            <button onClick={() => setSelectedSubject(null)} className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${!selectedSubject ? 'bg-indigo-100 text-indigo-600' : 'bg-white text-indigo-400 border border-indigo-50'}`}>
-              All
+          <div className="flex gap-3">
+            <button onClick={handleCreate} className="btn-primary text-xs px-5 py-2.5">
+              ✏️ Type Note
             </button>
-            {subjects.map(s => (
-              <button key={s} onClick={() => setSelectedSubject(s === selectedSubject ? null : s)} className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${s === selectedSubject ? 'bg-indigo-100 text-indigo-600' : 'bg-white text-indigo-400 border border-indigo-50'}`}>
-                {s}
-              </button>
-            ))}
+            <button onClick={() => setShowUploadModal(true)}
+              className="rounded-xl text-xs px-4 py-2.5 font-medium transition-all"
+              style={{ background: 'rgba(78, 133, 191, 0.12)', color: '#89AACC', border: '1px solid rgba(78, 133, 191, 0.3)' }}>
+              📎 Upload
+            </button>
           </div>
         </div>
 
-        {/* Notes grid */}
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredNotes.map(note => (
-            <div key={note.id} className={`note-card glass-card p-5 hover-lift cursor-pointer transition-all duration-300 ${examMode ? 'bg-white' : ''}`}
-              onClick={() => setExpandedNote(expandedNote === note.id ? null : note.id)}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {notes.map(note => (
+            <div key={note.id}
+              className="glass-card p-5 transition-all duration-300 hover:scale-[1.02] cursor-pointer group"
+              onClick={() => handleEdit(note)}
             >
-              <div className="w-full h-1 rounded-full mb-4" style={{ background: note.color || 'linear-gradient(90deg, #3B1FA8, #6B3FFF)' }} />
-              <h4 className="text-sm font-semibold mb-2" style={{ color: '#1a1a2e' }}>{note.title || 'Untitled'}</h4>
-              <p className="text-xs text-indigo-400/60 leading-relaxed">{truncate(note.content)}</p>
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-indigo-50">
-                <span className="text-[10px] text-indigo-400/30">{note.created_at ? new Date(note.created_at).toLocaleDateString() : ''}</span>
-                <span className="text-[10px] text-indigo-400/30">{note.word_count || 0} words</span>
+              <div className="flex items-start justify-between mb-3">
+                <span className="text-[10px] uppercase tracking-wider text-muted">{note.subject || 'General'}</span>
+                <button onClick={(e) => { e.stopPropagation(); handledDelete(note); }}
+                  className="text-muted hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all text-xs">✕</button>
               </div>
-              {note.subject && (
-                <span className="inline-block mt-2 text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-400">{note.subject}</span>
+              <h3 className="text-base font-medium text-text-primary mb-2 line-clamp-2">{note.title}</h3>
+              <p className="text-xs text-muted line-clamp-3">{note.content}</p>
+              {note.note_type === 'file' && (
+                <div className="flex items-center justify-between mt-3">
+                  <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold uppercase"
+                    style={{
+                      background: note.file_type === 'PDF' ? 'rgba(255,107,107,0.12)' : note.file_type === 'DOCX' || note.file_type === 'DOC' ? 'rgba(137,170,204,0.12)' : 'rgba(245,166,35,0.12)',
+                      color: note.file_type === 'PDF' ? '#FF6B6B' : note.file_type === 'DOCX' || note.file_type === 'DOC' ? '#89AACC' : '#F5A623',
+                    }}>
+                    {note.file_type}
+                  </span>
+                  <a href={`http://localhost:3001${note.file_url}`} target="_blank" rel="noreferrer"
+                    className="text-xs font-medium text-[#89AACC] hover:text-[#4E85BF] transition-colors"
+                    onClick={e => e.stopPropagation()}>
+                    Open ↗
+                  </a>
+                </div>
               )}
-
-              {expandedNote === note.id && (
-                <div className="mt-4 pt-4 border-t border-indigo-50 space-y-3">
-                  <div className="prose prose-sm max-w-none text-sm leading-relaxed" style={{ color: 'rgba(26,26,46,0.7)' }}>
-                    {note.content}
-                  </div>
-                  <div className="flex gap-2">
-                    <button onClick={(e) => { e.stopPropagation(); handleEdit(note); }} className="text-xs px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-500 hover:bg-indigo-100 transition-all">Edit</button>
-                    <button onClick={(e) => { e.stopPropagation(); handleDelete(note.id); }} className="text-xs px-3 py-1.5 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 transition-all">Delete</button>
-                  </div>
+              {note.note_type === 'file' && (
+                <p className="text-[11px] text-muted/50 mt-1 truncate">{note.file_original_name}</p>
+              )}
+              {note.tags_array?.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {note.tags_array.map((tag, i) => (
+                    <span key={i} className="text-[9px] px-1.5 py-0.5 rounded-md bg-stroke/50 text-muted">{tag}</span>
+                  ))}
                 </div>
               )}
             </div>
           ))}
-          {filteredNotes.length === 0 && (
-            <div className="col-span-full text-center py-16">
-              <p className="text-4xl mb-4">📝</p>
-              <p className="text-indigo-400/40">No notes yet. Start building your knowledge library!</p>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Editor Modal */}
-      {showEditor && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm" onClick={() => setShowEditor(false)}>
-          <div className="glass-card-strong p-8 w-full max-w-2xl mx-4 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <h3 className="text-2xl font-display font-semibold mb-6">{editingNote ? 'Edit Note' : 'New Note'}</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Title</label>
-                <input value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" placeholder="Note title" />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Subject</label>
-                <input value={editForm.subject} onChange={e => setEditForm({...editForm, subject: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" placeholder="e.g. Mathematics" />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Content</label>
-                <textarea value={editForm.content} onChange={e => setEditForm({...editForm, content: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm resize-none"
-                  rows={12} placeholder="Write your notes here..." />
-              </div>
+      {/* Create/Edit Modal */}
+      {showCreate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowCreate(false)}>
+          <div className="glass-card-strong p-8 w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-xl font-display italic text-text-primary mb-6">
+              {editNote ? 'Edit Note' : 'New Note'}
+            </h3>
+            <form onSubmit={handleSave} className="space-y-4">
+              <input type="text" placeholder="Title" value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} required
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+              <input type="text" placeholder="Subject" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+              <textarea rows={5} placeholder="Write your notes here..." value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all resize-none" />
               <div className="flex gap-3 pt-2">
-                <button onClick={handleSave} className="flex-1 py-3 rounded-xl text-sm font-medium text-white transition-all hover:shadow-lg" style={{ background: 'linear-gradient(135deg, #3B1FA8, #6B3FFF)' }}>
-                  {editingNote ? 'Save Changes' : 'Create Note'}
+                <button type="submit" disabled={createNote.isPending || updateNote.isPending}
+                  className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90 disabled:opacity-40">
+                  {editNote ? 'Update' : 'Create'}
                 </button>
-                <button onClick={() => setShowEditor(false)} className="px-6 py-3 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-50 hover:bg-indigo-100 transition-all">Cancel</button>
+                <button type="button" onClick={() => setShowCreate(false)}
+                  className="px-6 py-3 rounded-xl text-sm text-muted border border-stroke hover:text-text-primary transition-all">
+                  Cancel
+                </button>
               </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* File Upload Modal */}
+      {showUploadModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowUploadModal(false)}>
+          <div className="glass-card-strong p-8 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-xl font-display italic text-text-primary mb-1">Upload Study File</h3>
+            <p className="text-xs text-muted mb-6">PDF, PPT, PPTX, DOC, DOCX · Max 50MB</p>
+
+            <div className="border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all hover:border-[#89AACC] hover:bg-surface/30 mb-5"
+              style={{ borderColor: uploadFile ? '#89AACC' : 'hsl(var(--stroke))' }}
+              onClick={() => fileUploadRef.current?.click()}
+              onDragOver={e => e.preventDefault()}
+              onDrop={e => {
+                e.preventDefault();
+                const f = e.dataTransfer.files?.[0];
+                if (f) { setUploadFile(f); setUploadForm(prev => ({ ...prev, title: f.name.replace(/\.[^.]+$/, '') })); }
+              }}>
+              {uploadFile ? (
+                <>
+                  <p className="text-2xl mb-1">📄</p>
+                  <p className="text-sm font-medium text-text-primary">{uploadFile.name}</p>
+                  <p className="text-[11px] text-muted mt-1">{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-3xl mb-2">📎</p>
+                  <p className="text-sm text-muted">Click or drag file here</p>
+                  <p className="text-[11px] text-muted/50 mt-1">PDF, PPT, PPTX, DOC, DOCX</p>
+                </>
+              )}
+            </div>
+
+            <input ref={fileUploadRef} type="file" accept=".pdf,.ppt,.pptx,.doc,.docx" className="hidden"
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (f) { setUploadFile(f); setUploadForm(prev => ({ ...prev, title: f.name.replace(/\.[^.]+$/, '') })); }
+              }} />
+
+            <div className="space-y-3 mb-6">
+              <input type="text" placeholder="Note title" value={uploadForm.title}
+                onChange={e => setUploadForm(prev => ({ ...prev, title: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+              <input type="text" placeholder="Subject" value={uploadForm.subject}
+                onChange={e => setUploadForm(prev => ({ ...prev, subject: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+            </div>
+
+            <div className="flex gap-3">
+              <button disabled={!uploadFile || uploadNoteFile.isPending}
+                className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90 disabled:opacity-40"
+                onClick={() => {
+                  if (!uploadFile) return;
+                  uploadNoteFile.mutate({ file: uploadFile, title: uploadForm.title, subject: uploadForm.subject });
+                  setShowUploadModal(false);
+                  setUploadFile(null);
+                  setUploadForm({ title: '', subject: '' });
+                }}>
+                {uploadNoteFile.isPending ? 'Uploading...' : 'Upload File'}
+              </button>
+              <button type="button" onClick={() => { setShowUploadModal(false); setUploadFile(null); }}
+                className="px-6 py-3 rounded-xl text-sm text-muted border border-stroke hover:text-text-primary transition-all">
+                Cancel
+              </button>
             </div>
           </div>
         </div>

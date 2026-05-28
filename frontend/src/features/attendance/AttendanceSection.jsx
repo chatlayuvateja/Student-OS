@@ -1,12 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useAttendanceSummary, useMarkAttendance, useTimetable } from '../../hooks/api';
+import { useTimetable } from '../../hooks/api';
+import { useAttendanceSummary, useMarkAttendance } from '../../hooks/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function AttendanceSection() {
   const sectionRef = useRef(null);
@@ -16,9 +17,10 @@ function AttendanceSection() {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [leaveData, setLeaveData] = useState(null);
+  const [slotModal, setSlotModal] = useState(null);
 
-  const { data: summary } = useAttendanceSummary();
   const { data: timetable = [] } = useTimetable();
+  const { data: summary } = useAttendanceSummary();
   const markAttendance = useMarkAttendance();
 
   useEffect(() => {
@@ -26,219 +28,198 @@ function AttendanceSection() {
       if (titleRef.current) {
         gsap.fromTo(titleRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: titleRef.current, start: 'top 85%' } });
       }
-    });
+    }, sectionRef);
     return () => ctx.revert();
   }, []);
 
-  const today = new Date();
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+  const calendarDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-  const calendarDays = [];
-  for (let i = 0; i < firstDay; i++) calendarDays.push(null);
-  for (let i = 1; i <= daysInMonth; i++) calendarDays.push(i);
+  const attendancePct = summary?.present && summary?.total
+    ? ((summary.present / summary.total) * 100).toFixed(1) : '0.0';
 
-  // Get classes for a specific day
-  const getDayClasses = (day) => {
-    if (!day) return [];
-    const date = new Date(currentYear, currentMonth, day);
-    const dayOfWeek = date.getDay();
-    return timetable.filter(t => t.day_of_week === dayOfWeek);
-  };
-
-  const handleStatusClick = (day, cls, status) => {
-    if (status === 'leave') {
-      // Show leave impact modal
-      const total = summary?.total || 1;
-      const present = summary?.present || 0;
-      const currentPct = (present / total) * 100;
-      const newPct = (present / (total + 1)) * 100;
-      setLeaveData({
-        day,
-        cls,
-        currentPercentage: currentPct,
-        newPercentage: newPct,
-        delta: newPct - currentPct,
-        remainingLeaves: Math.floor((75 / 100 * (total + 1) - present) / 0.75),
-      });
-      setShowLeaveModal(true);
-      return;
-    }
+  const handleMarkStatus = (day, cls, status) => {
+    const date = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
     markAttendance.mutate({
       subject_id: cls.id,
-      date: new Date(currentYear, currentMonth, day).toISOString().split('T')[0],
+      date,
       status,
       timetable_slot_id: cls.id,
+      student_id: 'student-1',
     });
   };
 
-  const confirmLeave = () => {
-    if (leaveData) {
-      markAttendance.mutate({
-        subject_id: leaveData.cls.id,
-        date: new Date(currentYear, currentMonth, leaveData.day).toISOString().split('T')[0],
-        status: 'leave',
-        timetable_slot_id: leaveData.cls.id,
-      });
-    }
-    setShowLeaveModal(false);
-    setLeaveData(null);
-  };
-
-  const colorByPct = (pct) => {
-    if (pct >= 75) return '#00C2A8';
-    if (pct >= 65) return '#F5A623';
-    return '#FF6B6B';
-  };
-
-  const isToday = (day) => {
-    return day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
-  };
-
   return (
-    <section ref={sectionRef} className="relative py-28 lg:py-36">
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
       <div className="section-container">
-        <div ref={titleRef} className="mb-12">
-          <h2 className="section-title">Never Miss<br />What Matters</h2>
-          <p className="section-subtitle mt-4">Your attendance, your responsibility.</p>
+        <div ref={titleRef} className="mb-10">
+          <p className="section-eyebrow">Tracking</p>
+          <h2 className="section-heading">Attendance *overview*</h2>
+          <p className="section-subtext">Monitor your class attendance.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Calendar */}
-          <div className="lg:col-span-2 glass-card p-6">
-            {/* Month navigation */}
-            <div className="flex items-center justify-between mb-6">
-              <button onClick={() => { if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(prev => prev - 1); } else setCurrentMonth(prev => prev - 1); }}
-                className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-400 flex items-center justify-center hover:bg-indigo-100 transition-all">&lt;</button>
-              <h3 className="text-lg font-display font-semibold" style={{ color: '#1a1a2e' }}>{MONTHS[currentMonth]} {currentYear}</h3>
-              <button onClick={() => { if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(prev => prev + 1); } else setCurrentMonth(prev => prev + 1); }}
-                className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-400 flex items-center justify-center hover:bg-indigo-100 transition-all">&gt;</button>
-            </div>
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <div className="glass-card p-5 text-center">
+            <p className="text-2xl font-display italic text-text-primary">{attendancePct}%</p>
+            <p className="text-[10px] text-muted uppercase tracking-wider mt-1">Attendance</p>
+          </div>
+          <div className="glass-card p-5 text-center">
+            <p className="text-2xl font-display italic text-text-primary">{summary?.present || 0}</p>
+            <p className="text-[10px] text-muted uppercase tracking-wider mt-1">Present</p>
+          </div>
+          <div className="glass-card p-5 text-center">
+            <p className="text-2xl font-display italic text-text-primary">{summary?.absent || 0}</p>
+            <p className="text-[10px] text-muted uppercase tracking-wider mt-1">Absent</p>
+          </div>
+          <div className="glass-card p-5 text-center">
+            <p className="text-2xl font-display italic text-text-primary">{summary?.leave || 0}</p>
+            <p className="text-[10px] text-muted uppercase tracking-wider mt-1">Leaves</p>
+          </div>
+        </div>
 
-            {/* Day headers */}
-            <div className="grid grid-cols-7 gap-1 mb-2">
-              {DAYS.map(d => (
-                <div key={d} className="text-center text-[10px] font-medium text-indigo-400/40 py-1">{d}</div>
-              ))}
-            </div>
-
-            {/* Calendar grid */}
-            <div className="grid grid-cols-7 gap-1">
-              {calendarDays.map((day, i) => {
-                const classes = getDayClasses(day);
-                return (
-                  <div key={i} className={`min-h-[80px] p-1.5 rounded-xl transition-all ${
-                    isToday(day) ? 'bg-indigo-50 ring-2 ring-indigo-200' : 'hover:bg-indigo-50/30'
-                  } ${!day ? 'invisible' : ''}`}>
-                    {day && (
-                      <>
-                        <span className={`text-[10px] font-medium ${isToday(day) ? 'text-indigo-600' : 'text-indigo-400/40'}`}>{day}</span>
-                        <div className="mt-1 space-y-0.5">
-                          {classes.slice(0, 3).map(cls => (
-                            <div key={cls.id} className="group relative">
-                              <div className="text-[8px] px-1 py-0.5 rounded-md truncate cursor-pointer transition-all"
-                                style={{ background: cls.color_tag + '20', color: cls.color_tag }}
-                                onClick={() => setSelectedSlot({ day, cls })}
-                              >
-                                {cls.subject_name?.slice(0, 8)}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+        {/* Calendar */}
+        <div className="glass-card overflow-hidden">
+          {/* Month nav */}
+          <div className="flex items-center justify-between p-4 border-b border-stroke">
+            <button onClick={() => { if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(p => p - 1); } else setCurrentMonth(p => p - 1); }}
+              className="text-muted hover:text-text-primary transition-all text-sm px-3 py-1">←</button>
+            <p className="text-sm font-medium text-text-primary">{MONTHS[currentMonth]} {currentYear}</p>
+            <button onClick={() => { if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(p => p + 1); } else setCurrentMonth(p => p + 1); }}
+              className="text-muted hover:text-text-primary transition-all text-sm px-3 py-1">→</button>
           </div>
 
-          {/* Summary */}
-          <div className="space-y-4">
-            <div className="glass-card p-6 text-center">
-              <p className="text-5xl font-mono font-bold" style={{ color: colorByPct(summary?.percentage || 0) }}>
-                {summary?.percentage?.toFixed(1) || 0}%
-              </p>
-              <p className="text-xs text-indigo-400/40 mt-1">Overall Attendance</p>
-              <div className="flex justify-center gap-4 mt-4 text-xs text-indigo-400/60">
-                <span>P: {summary?.present || 0}</span>
-                <span>A: {summary?.absent || 0}</span>
-                <span>L: {summary?.leave || 0}</span>
+          {/* Day headers */}
+          <div className="grid grid-cols-7 border-b border-stroke">
+            {DAYS.map(d => (
+              <div key={d} className="p-2 text-center">
+                <span className="text-[9px] text-muted uppercase tracking-wider">{d.slice(0, 3)}</span>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* Per-subject rings */}
-            <div className="glass-card p-5">
-              <h4 className="text-xs font-semibold mb-3" style={{ color: '#1a1a2e' }}>By Subject</h4>
-              <div className="space-y-3">
-                {['Data Structures', 'Algorithms', 'Mathematics', 'Physics'].map(sub => {
-                  const pct = Math.random() * 40 + 60;
-                  return (
-                    <div key={sub} className="flex items-center gap-3">
-                      <div className="relative w-10 h-10 flex-shrink-0">
-                        <svg width="40" height="40" viewBox="0 0 40 40">
-                          <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(59,31,168,0.06)" strokeWidth="4" />
-                          <circle cx="20" cy="20" r="16" fill="none" stroke={colorByPct(pct)} strokeWidth="4"
-                            strokeDasharray={`${pct * 1.0} 100`} strokeLinecap="round"
-                            transform="rotate(-90 20 20)" />
-                        </svg>
+          {/* Calendar grid */}
+          <div className="grid grid-cols-7">
+            {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+              <div key={`empty-${i}`} className="p-2 bg-stroke/10" />
+            ))}
+            {calendarDays.map(day => {
+              const daySlots = timetable.filter(s => s.day_of_week === new Date(currentYear, currentMonth, day).getDay());
+              return (
+                <div key={day} className="p-1.5 border-b border-r border-stroke last:border-r-0 min-h-[60px] hover:bg-surface/20 transition-colors">
+                  <span className="text-[10px] text-muted">{day}</span>
+                  <div className="mt-0.5 space-y-0.5">
+                    {daySlots.slice(0, 2).map(cls => (
+                      <div key={cls.id}
+                        className="text-[8px] px-1 py-0.5 rounded-md truncate cursor-pointer transition-all hover:brightness-125"
+                        style={{ background: (cls.color_tag || '#89AACC') + '20', color: cls.color_tag || '#89AACC' }}
+                        onClick={() => {
+                          const date = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
+                          setSlotModal({ day, cls, date });
+                        }}
+                      >
+                        {cls.subject_name?.slice(0, 8)}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium truncate" style={{ color: '#1a1a2e' }}>{sub}</p>
-                        <p className="text-[10px] text-indigo-400/40">{pct.toFixed(0)}%</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Status badge */}
-            <div className={`glass-card p-4 text-center ${
-              (summary?.percentage || 0) >= 75 ? 'border-mint/20' : (summary?.percentage || 0) >= 65 ? 'border-gold/20' : 'border-coral/20'
-            }`}
-              style={{ borderWidth: '1px', borderStyle: 'solid' }}
-            >
-              <p className="text-xs font-medium" style={{ color: colorByPct(summary?.percentage || 0) }}>
-                {(summary?.percentage || 0) >= 75 ? '✅ Excellent Attendance' :
-                 (summary?.percentage || 0) >= 65 ? '⚠️ Needs Attention' : '❌ Critical'}
-              </p>
-            </div>
+                    ))}
+                    {daySlots.length > 2 && (
+                      <span className="text-[7px] text-muted">+{daySlots.length - 2} more</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Leave Impact Modal */}
-      {showLeaveModal && leaveData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm" onClick={() => setShowLeaveModal(false)}>
-          <div className="glass-card-strong p-8 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-2xl font-display font-semibold mb-2">Request Leave</h3>
-            <p className="text-sm text-indigo-400/60 mb-6">{leaveData.cls.subject_name} · {MONTHS[currentMonth]} {leaveData.day}</p>
-            <div className="space-y-4">
-              <div className="glass-card p-4 bg-yellow-50/50">
-                <p className="text-sm font-medium" style={{ color: '#F5A623' }}>
-                  ⚠️ This will decrease your attendance by {Math.abs(leaveData.delta).toFixed(1)}%
-                </p>
+      {/* Slot Action Modal */}
+      {slotModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSlotModal(null)}>
+          <div className="glass-card-strong p-8 w-full max-w-sm mx-4" onClick={e => e.stopPropagation()}>
+            <div className="mb-6">
+              <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3"
+                style={{ background: (slotModal.cls.color_tag || '#89AACC') + '18', color: slotModal.cls.color_tag || '#89AACC' }}>
+                {slotModal.cls.subject_name}
               </div>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="glass-card p-3 text-center">
-                  <p className="text-[10px] text-indigo-400/40">Current</p>
-                  <p className="text-lg font-mono font-bold" style={{ color: colorByPct(leaveData.currentPercentage) }}>{leaveData.currentPercentage.toFixed(1)}%</p>
-                </div>
-                <div className="glass-card p-3 text-center">
-                  <p className="text-[10px] text-indigo-400/40">Projected</p>
-                  <p className="text-lg font-mono font-bold" style={{ color: colorByPct(leaveData.newPercentage) }}>{leaveData.newPercentage.toFixed(1)}%</p>
-                </div>
-              </div>
-              <p className="text-xs text-center text-indigo-400/40">
-                You have approximately <span className="font-semibold text-indigo-500">{Math.max(0, leaveData.remainingLeaves)}</span> leaves remaining before falling below 75%.
+              <p className="text-lg font-display italic text-text-primary">Mark Attendance</p>
+              <p className="text-xs text-muted mt-1">
+                {MONTHS[currentMonth]} {slotModal.day}, {currentYear} &nbsp;·&nbsp;
+                {slotModal.cls.start_time} – {slotModal.cls.end_time}
+                {slotModal.cls.room ? ` · Room ${slotModal.cls.room}` : ''}
               </p>
-              <div className="flex gap-3 pt-2">
-                <button onClick={confirmLeave} className="flex-1 py-3 rounded-xl text-sm font-medium text-white transition-all hover:shadow-lg" style={{ background: 'linear-gradient(135deg, #F5A623, #FF6B6B)' }}>
-                  Confirm Leave
-                </button>
-                <button onClick={() => setShowLeaveModal(false)} className="px-6 py-3 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-50 hover:bg-indigo-100 transition-all">Cancel</button>
-              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3">
+              <button className="flex flex-col items-center gap-2 py-4 rounded-2xl border-2 transition-all hover:scale-105 active:scale-95"
+                style={{ borderColor: '#00C2A8', background: 'rgba(0,194,168,0.05)' }}
+                onClick={() => { handleMarkStatus(slotModal.day, slotModal.cls, 'present'); setSlotModal(null); }}>
+                <span className="text-2xl">✅</span>
+                <span className="text-xs font-semibold" style={{ color: '#00C2A8' }}>Present</span>
+              </button>
+              <button className="flex flex-col items-center gap-2 py-4 rounded-2xl border-2 transition-all hover:scale-105 active:scale-95"
+                style={{ borderColor: '#FF6B6B', background: 'rgba(255,107,107,0.05)' }}
+                onClick={() => { handleMarkStatus(slotModal.day, slotModal.cls, 'absent'); setSlotModal(null); }}>
+                <span className="text-2xl">❌</span>
+                <span className="text-xs font-semibold" style={{ color: '#FF6B6B' }}>Absent</span>
+              </button>
+              <button className="flex flex-col items-center gap-2 py-4 rounded-2xl border-2 transition-all hover:scale-105 active:scale-95"
+                style={{ borderColor: '#F5A623', background: 'rgba(245,166,35,0.05)' }}
+                onClick={() => {
+                  const total = (summary?.total || 0) + 1;
+                  const present = summary?.present || 0;
+                  const currentPct = total > 1 ? ((present) / (total - 1)) * 100 : 100;
+                  const newPct = (present / total) * 100;
+                  setLeaveData({
+                    day: slotModal.day, cls: slotModal.cls, date: slotModal.date,
+                    currentPercentage: currentPct, newPercentage: newPct,
+                    delta: newPct - currentPct,
+                    remainingLeaves: Math.max(0, Math.floor(present - 0.75 * total)),
+                  });
+                  setSlotModal(null);
+                  setShowLeaveModal(true);
+                }}>
+                <span className="text-2xl">🟡</span>
+                <span className="text-xs font-semibold" style={{ color: '#F5A623' }}>Leave</span>
+              </button>
+            </div>
+            <button className="w-full mt-4 py-2 text-xs text-muted hover:text-text-primary transition-all"
+              onClick={() => setSlotModal(null)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* Leave Warning Modal */}
+      {showLeaveModal && leaveData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowLeaveModal(false)}>
+          <div className="glass-card-strong p-8 w-full max-w-sm mx-4" onClick={e => e.stopPropagation()}>
+            <p className="text-base font-display italic text-text-primary mb-4">Leave Warning</p>
+            <div className="space-y-3 mb-6">
+              <p className="text-sm text-muted">
+                Current: <span className="text-text-primary font-medium">{leaveData.currentPercentage.toFixed(1)}%</span>
+              </p>
+              <p className="text-sm text-muted">
+                After leave: <span className="text-[#F5A623] font-medium">{leaveData.newPercentage.toFixed(1)}%</span>
+              </p>
+              <p className="text-sm font-medium" style={{ color: '#F5A623' }}>
+                ⚠️ Taking this leave will reduce your attendance by{' '}
+                <span className="text-base font-bold">{Math.abs(leaveData.delta).toFixed(2)}%</span>
+              </p>
+              <p className="text-xs mt-1" style={{ color: '#b45309' }}>
+                {leaveData.newPercentage < 75
+                  ? '🚨 You will fall below the 75% minimum threshold!'
+                  : 'You will still be above the 75% threshold.'}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => { handleMarkStatus(leaveData.day, leaveData.cls, 'leave'); setShowLeaveModal(false); }}
+                className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90">
+                Confirm Leave
+              </button>
+              <button onClick={() => setShowLeaveModal(false)}
+                className="px-6 py-3 rounded-xl text-sm text-muted border border-stroke hover:text-text-primary transition-all">
+                Cancel
+              </button>
             </div>
           </div>
         </div>

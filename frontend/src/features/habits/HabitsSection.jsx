@@ -1,186 +1,122 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { RadialBarChart, RadialBar, ResponsiveContainer, Legend } from 'recharts';
 import { useHabits, useCreateHabit, useCompleteHabit } from '../../hooks/api';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const ICONS = ['📌', '📚', '🏃', '💻', '🎯', '🧠', '🎨', '🌱', '💪', '🧘', '📝', '🎵', '☕', '💧', '😴'];
 
 function HabitsSection() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const gridRef = useRef(null);
-  const [showAdd, setShowAdd] = useState(false);
-  const [form, setForm] = useState({ name: '', icon: '📚', frequency: 'daily', color: '#6366f1' });
-  const [animatingId, setAnimatingId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({ name: '', icon: '📌', frequency: 'daily', color: '#89AACC' });
 
   const { data: habits = [] } = useHabits();
   const createHabit = useCreateHabit();
   const completeHabit = useCompleteHabit();
+  const [completing, setCompleting] = useState(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (titleRef.current) {
         gsap.fromTo(titleRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: titleRef.current, start: 'top 85%' } });
       }
-      if (gridRef.current) {
-        const items = gridRef.current.querySelectorAll('.habit-card');
-        gsap.fromTo(items, { y: 60, opacity: 0 }, {
-          y: 0, opacity: 1, stagger: 0.08, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: { trigger: gridRef.current, start: 'top 80%' },
-        });
-      }
-    });
+    }, sectionRef);
     return () => ctx.revert();
-  }, [habits]);
+  }, []);
 
-  const handleComplete = (id) => {
-    setAnimatingId(id);
-    gsap.to(`#habit-${id}`, { scale: 1.02, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut' });
-    completeHabit.mutate({ id });
-    setTimeout(() => setAnimatingId(null), 500);
-  };
-
-  const handleAdd = (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
     createHabit.mutate(form);
-    setForm({ name: '', icon: '📚', frequency: 'daily', color: '#6366f1' });
-    setShowAdd(false);
+    setShowModal(false);
+    setForm({ name: '', icon: '📌', frequency: 'daily', color: '#89AACC' });
   };
 
-  // Generate mock heatmap data (90 days)
-  const getHeatmap = () => {
-    const cells = [];
-    const today = new Date();
-    for (let i = 89; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      cells.push({
-        date: d.toISOString().split('T')[0],
-        value: Math.random() > 0.4 ? Math.floor(Math.random() * 4) : 0,
-      });
-    }
-    return cells;
+  const handleComplete = async (habit) => {
+    setCompleting(habit.id);
+    await completeHabit.mutateAsync({ id: habit.id });
+    setCompleting(null);
   };
-
-  const heatmap = getHeatmap();
-
-  // Weekly completion data
-  const weeklyData = habits.map(h => ({
-    name: h.name,
-    value: Math.floor(Math.random() * 100),
-    fill: h.color || '#6366f1',
-  }));
 
   return (
-    <section ref={sectionRef} className="relative py-28 lg:py-36 bg-gradient-to-b from-cream via-soft-mint/20 to-cream">
+    <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
       <div className="section-container">
-        <div ref={titleRef} className="mb-12">
-          <h2 className="section-title">Build the Discipline<br />That Builds You</h2>
-          <p className="section-subtitle mt-4">Small daily wins. Massive long-term results.</p>
-          <button onClick={() => setShowAdd(true)} className="mt-6 px-6 py-3 rounded-2xl text-sm font-medium text-white transition-all duration-300 hover:shadow-lg hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #00C2A8, #14B8A6)' }}>
+        <div ref={titleRef} className="flex items-center justify-between mb-10">
+          <div>
+            <p className="section-eyebrow">Tracking</p>
+            <h2 className="section-heading">Daily *habits*</h2>
+            <p className="section-subtext">Build consistent routines.</p>
+          </div>
+          <button onClick={() => setShowModal(true)} className="btn-primary text-xs px-5 py-2.5">
             + New Habit
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Habits grid */}
-          <div ref={gridRef} className="lg:col-span-2 space-y-4">
-            {habits.map((habit) => (
-              <div key={habit.id} id={`habit-${habit.id}`}
-                className="habit-card glass-card p-5 flex items-center gap-5 hover-lift"
+        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {habits.map(habit => (
+            <div key={habit.id}
+              className="glass-card p-5 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02]"
+            >
+              <span className="text-2xl mb-3">{habit.icon}</span>
+              <h3 className="text-sm font-medium text-text-primary mb-3">{habit.name}</h3>
+              <div className="flex items-center gap-2 text-[10px] text-muted mb-3">
+                <span className="uppercase tracking-wider">{habit.frequency}</span>
+              </div>
+              <button
+                onClick={() => handleComplete(habit)}
+                disabled={completing === habit.id}
+                className="w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center disabled:opacity-40"
+                style={{ borderColor: habit.color || '#89AACC' }}
               >
-                <span className="text-2xl">{habit.icon || '📚'}</span>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-sm" style={{ color: '#1a1a2e' }}>{habit.name}</h4>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${habit.frequency === 'daily' ? 'bg-blue-50 text-blue-500' : 'bg-purple-50 text-purple-500'}`}>
-                      {habit.frequency}
-                    </span>
-                  </div>
-                  <div className="flex gap-1">
-                    {heatmap.slice(0, 30).map((cell, i) => (
-                      <div key={i} className="w-3 h-3 rounded-sm" style={{
-                        background: cell.value === 0 ? 'rgba(59,31,168,0.04)' :
-                          cell.value === 1 ? 'rgba(0,194,168,0.3)' :
-                            cell.value === 2 ? 'rgba(0,194,168,0.5)' :
-                              cell.value === 3 ? 'rgba(0,194,168,0.7)' : 'rgba(0,194,168,0.9)',
-                        transition: 'all 0.3s ease',
-                      }} />
-                    ))}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <p className="text-2xl font-mono font-bold" style={{ color: habit.color || '#6366f1' }}>
-                    {Math.floor(Math.random() * 14)}
-                  </p>
-                  <p className="text-[10px] text-indigo-400/40">day streak</p>
-                </div>
-                <button onClick={() => handleComplete(habit.id)}
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                    animatingId === habit.id ? 'bg-mint text-white scale-110' : 'bg-indigo-50 text-indigo-300 hover:bg-mint hover:text-white'
-                  }`}
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </button>
-              </div>
-            ))}
-            {habits.length === 0 && (
-              <div className="text-center py-16 text-indigo-400/40">
-                <p className="text-4xl mb-2">🎯</p>
-                <p>No habits yet. Start building your discipline!</p>
-              </div>
-            )}
-          </div>
-
-          {/* Weekly ring chart */}
-          <div className="glass-card p-6">
-            <h4 className="text-sm font-semibold mb-4" style={{ color: '#1a1a2e' }}>This Week's Score</h4>
-            <ResponsiveContainer width="100%" height={200}>
-              <RadialBarChart innerRadius="40%" outerRadius="90%" data={weeklyData.slice(0, 1)} startAngle={180} endAngle={0}>
-                <RadialBar dataKey="value" cornerRadius={30} />
-              </RadialBarChart>
-            </ResponsiveContainer>
-            <div className="text-center mt-2">
-              <p className="text-3xl font-mono font-bold text-mint">{Math.floor(Math.random() * 100)}%</p>
-              <p className="text-xs text-indigo-400/40">completion rate</p>
+                {completing === habit.id ? (
+                  <span className="w-4 h-4 border-2 border-muted border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <span style={{ color: habit.color || '#89AACC' }}>✓</span>
+                )}
+              </button>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* Add Habit Modal */}
-      {showAdd && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm" onClick={() => setShowAdd(false)}>
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowModal(false)}>
           <div className="glass-card-strong p-8 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
-            <h3 className="text-2xl font-display font-semibold mb-6">New Habit</h3>
-            <form onSubmit={handleAdd} className="space-y-4">
+            <h3 className="text-xl font-display italic text-text-primary mb-6">Create Habit</h3>
+            <form onSubmit={handleCreate} className="space-y-4">
+              <input type="text" placeholder="Habit name" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
               <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Habit Name</label>
-                <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" placeholder="e.g. Morning Study" required />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Icon</label>
-                  <input value={form.icon} onChange={e => setForm({...form, icon: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm" placeholder="📚" />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-indigo-400/60 mb-1">Frequency</label>
-                  <select value={form.frequency} onChange={e => setForm({...form, frequency: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-indigo-100 focus:border-indigo-300 outline-none text-sm">
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                  </select>
+                <p className="text-xs text-muted mb-2">Choose icon</p>
+                <div className="flex flex-wrap gap-2">
+                  {ICONS.map(icon => (
+                    <button key={icon} type="button" onClick={() => setForm(p => ({ ...p, icon }))}
+                      className={`w-9 h-9 rounded-lg text-sm flex items-center justify-center transition-all ${form.icon === icon ? 'ring-2 ring-text-primary bg-surface' : 'bg-stroke/30 hover:bg-stroke'}`}>
+                      {icon}
+                    </button>
+                  ))}
                 </div>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-indigo-400/60 mb-1">Color</label>
-                <input type="color" value={form.color} onChange={e => setForm({...form, color: e.target.value})} className="w-full h-10 rounded-xl border border-indigo-100 cursor-pointer" />
-              </div>
+              <select value={form.frequency} onChange={e => setForm(p => ({ ...p, frequency: e.target.value }))}
+                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary focus:outline-none focus:border-text-primary/30 transition-all">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+              </select>
+              <input type="color" value={form.color} onChange={e => setForm(p => ({ ...p, color: e.target.value }))}
+                className="w-full h-10 rounded-xl cursor-pointer bg-surface border border-stroke" />
               <div className="flex gap-3 pt-2">
-                <button type="submit" className="flex-1 py-3 rounded-xl text-sm font-medium text-white transition-all hover:shadow-lg" style={{ background: 'linear-gradient(135deg, #00C2A8, #14B8A6)' }}>Create Habit</button>
-                <button type="button" onClick={() => setShowAdd(false)} className="px-6 py-3 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-50 hover:bg-indigo-100 transition-all">Cancel</button>
+                <button type="submit" disabled={createHabit.isPending}
+                  className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90 disabled:opacity-40">
+                  {createHabit.isPending ? 'Creating...' : 'Create'}
+                </button>
+                <button type="button" onClick={() => setShowModal(false)}
+                  className="px-6 py-3 rounded-xl text-sm text-muted border border-stroke hover:text-text-primary transition-all">
+                  Cancel
+                </button>
               </div>
             </form>
           </div>

@@ -1,0 +1,68 @@
+[
+  {
+    "student_id": "student-1",
+    "title": "Binary Search Trees",
+    "content": "BST is a node-based data structure where each node has at most two children (left and right). The left subtree contains values less than the parent node, and the right subtree contains values greater than the parent node.\n\nKey Operations:\n- Search: O(h) where h is height\n- Insert: O(h)\n- Delete: O(h)\n\nBalanced BSTs (AVL, Red-Black) maintain O(log n) operations.",
+    "subject": "Data Structures",
+    "color": "#6366f1",
+    "word_count": 80,
+    "id": "344034a2-ba2e-4593-9941-17a8224f3cd1",
+    "created_at": "2026-05-28T06:18:03.056Z",
+    "updated_at": "2026-05-28T06:18:03.056Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Sorting Algorithms",
+    "content": "Comparison-based sorting:\n1. Bubble Sort - O(n²)\n2. Merge Sort - O(n log n)\n3. Quick Sort - O(n log n) average\n4. Heap Sort - O(n log n)\n\nNon-comparison based:\n1. Counting Sort - O(n+k)\n2. Radix Sort - O(d(n+k))\n\nMerge Sort is stable, Quick Sort is not.",
+    "subject": "Algorithms",
+    "color": "#FF6B6B",
+    "word_count": 75,
+    "id": "62b65296-96cf-432f-9d40-81b879c24b4e",
+    "created_at": "2026-05-28T06:18:03.058Z",
+    "updated_at": "2026-05-28T06:18:03.058Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Newton's Laws",
+    "content": "First Law (Law of Inertia): An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.\n\nSecond Law: F = ma (Force = mass × acceleration)\n\nThird Law: For every action, there is an equal and opposite reaction.\n\nApplications: projectile motion, friction, circular motion.",
+    "subject": "Physics",
+    "color": "#00C2A8",
+    "word_count": 70,
+    "id": "67df7510-39d8-4eaa-b8e2-0438cc7c05e2",
+    "created_at": "2026-05-28T06:18:03.060Z",
+    "updated_at": "2026-05-28T06:18:03.060Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Binary Search Trees",
+    "content": "BST is a node-based data structure where each node has at most two children (left and right). The left subtree contains values less than the parent node, and the right subtree contains values greater than the parent node.\n\nKey Operations:\n- Search: O(h) where h is height\n- Insert: O(h)\n- Delete: O(h)\n\nBalanced BSTs (AVL, Red-Black) maintain O(log n) operations.",
+    "subject": "Data Structures",
+    "color": "#6366f1",
+    "word_count": 80,
+    "id": "dc101827-8b46-40e8-9377-a8391a070d9f",
+    "created_at": "2026-05-28T06:30:44.974Z",
+    "updated_at": "2026-05-28T06:30:44.974Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Sorting Algorithms",
+    "content": "Comparison-based sorting:\n1. Bubble Sort - O(n²)\n2. Merge Sort - O(n log n)\n3. Quick Sort - O(n log n) average\n4. Heap Sort - O(n log n)\n\nNon-comparison based:\n1. Counting Sort - O(n+k)\n2. Radix Sort - O(d(n+k))\n\nMerge Sort is stable, Quick Sort is not.",
+    "subject": "Algorithms",
+    "color": "#FF6B6B",
+    "word_count": 75,
+    "id": "a9278566-0103-4e15-b370-e8ea78ec9c9f",
+    "created_at": "2026-05-28T06:30:44.975Z",
+    "updated_at": "2026-05-28T06:30:44.975Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Newton's Laws",
+    "content": "First Law (Law of Inertia): An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.\n\nSecond Law: F = ma (Force = mass × acceleration)\n\nThird Law: For every action, there is an equal and opposite reaction.\n\nApplications: projectile motion, friction, circular motion.",
+    "subject": "Physics",
+    "color": "#00C2A8",
+    "word_count": 70,
+    "id": "99729512-0146-416f-a7d1-a9cfcbff0762",
+    "created_at": "2026-05-28T06:30:44.976Z",
+    "updated_at": "2026-05-28T06:30:44.976Z"
+  }
+]

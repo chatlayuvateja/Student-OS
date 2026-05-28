@@ -1,0 +1,80 @@
+[
+  {
+    "student_id": "student-1",
+    "title": "GitHub - CS Study Guide",
+    "description": "Comprehensive computer science study resources",
+    "url": "https://github.com/ossu/computer-science",
+    "type": "link",
+    "subject_tag": "CS",
+    "thumbnail_url": null,
+    "category": "Study Guides",
+    "id": "befc961e-aab7-4ace-b124-7ece12fbd2e6",
+    "created_at": "2026-05-28T06:18:03.140Z",
+    "updated_at": "2026-05-28T06:18:03.140Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "3Blue1Brown - Linear Algebra",
+    "description": "Essence of linear algebra series",
+    "url": "https://youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+    "type": "youtube",
+    "subject_tag": "Mathematics",
+    "thumbnail_url": null,
+    "category": "Video Tutorials",
+    "id": "b3a0f117-db1f-41c4-9ded-097eed721d38",
+    "created_at": "2026-05-28T06:18:03.142Z",
+    "updated_at": "2026-05-28T06:18:03.142Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "LeetCode",
+    "description": "Practice coding problems",
+    "url": "https://leetcode.com",
+    "type": "tool",
+    "subject_tag": "Algorithms",
+    "thumbnail_url": null,
+    "category": "Practice",
+    "id": "654c63e7-22f6-4a87-bb20-e06c20d5d6c3",
+    "created_at": "2026-05-28T06:18:03.144Z",
+    "updated_at": "2026-05-28T06:18:03.144Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "GitHub - CS Study Guide",
+    "description": "Comprehensive computer science study resources",
+    "url": "https://github.com/ossu/computer-science",
+    "type": "link",
+    "subject_tag": "CS",
+    "thumbnail_url": null,
+    "category": "Study Guides",
+    "id": "e4fbc1ef-ddb4-45c3-94ae-824383ab9c06",
+    "created_at": "2026-05-28T06:30:45.036Z",
+    "updated_at": "2026-05-28T06:30:45.036Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "3Blue1Brown - Linear Algebra",
+    "description": "Essence of linear algebra series",
+    "url": "https://youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+    "type": "youtube",
+    "subject_tag": "Mathematics",
+    "thumbnail_url": null,
+    "category": "Video Tutorials",
+    "id": "9d157cfe-9704-43c9-aa36-ebe98f33fb5c",
+    "created_at": "2026-05-28T06:30:45.037Z",
+    "updated_at": "2026-05-28T06:30:45.037Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "LeetCode",
+    "description": "Practice coding problems",
+    "url": "https://leetcode.com",
+    "type": "tool",
+    "subject_tag": "Algorithms",
+    "thumbnail_url": null,
+    "category": "Practice",
+    "id": "34aac731-356b-4f59-9f94-94ba190ef65b",
+    "created_at": "2026-05-28T06:30:45.039Z",
+    "updated_at": "2026-05-28T06:30:45.039Z"
+  }
+]

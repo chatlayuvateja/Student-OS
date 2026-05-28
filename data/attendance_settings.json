@@ -1,0 +1,5 @@
+{
+  "student_id": "student-1",
+  "minimum_threshold": 75,
+  "count_leaves_as_absent": false
+}

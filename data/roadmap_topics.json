@@ -1,0 +1,112 @@
+[
+  {
+    "roadmap_id": "34f28b3c-e2bc-4af8-a7db-f578bf6cbf40",
+    "topic_name": "Linear Regression",
+    "description": "Simple and multiple linear regression",
+    "order_index": 0,
+    "level": "beginner",
+    "is_completed": true,
+    "id": "6d9bf477-cb61-467e-8ff1-9d2554f48dac",
+    "created_at": "2026-05-28T06:18:03.065Z",
+    "updated_at": "2026-05-28T06:18:03.065Z"
+  },
+  {
+    "roadmap_id": "34f28b3c-e2bc-4af8-a7db-f578bf6cbf40",
+    "topic_name": "Logistic Regression",
+    "description": "Classification with logistic regression",
+    "order_index": 1,
+    "level": "beginner",
+    "is_completed": true,
+    "id": "503a4478-402f-4724-a1cf-bc5ffaa8e586",
+    "created_at": "2026-05-28T06:18:03.068Z",
+    "updated_at": "2026-05-28T06:18:03.068Z"
+  },
+  {
+    "roadmap_id": "34f28b3c-e2bc-4af8-a7db-f578bf6cbf40",
+    "topic_name": "Decision Trees & Random Forests",
+    "description": "Ensemble learning methods",
+    "order_index": 2,
+    "level": "intermediate",
+    "is_completed": false,
+    "id": "f3f89cdb-6232-45c7-a8ea-e7833ac1e261",
+    "created_at": "2026-05-28T06:18:03.070Z",
+    "updated_at": "2026-05-28T06:18:03.070Z"
+  },
+  {
+    "roadmap_id": "34f28b3c-e2bc-4af8-a7db-f578bf6cbf40",
+    "topic_name": "Neural Networks",
+    "description": "ANN, CNN, RNN architectures",
+    "order_index": 3,
+    "level": "intermediate",
+    "is_completed": false,
+    "id": "0e98d7d0-d633-42fe-a61a-64010c0435c7",
+    "created_at": "2026-05-28T06:18:03.071Z",
+    "updated_at": "2026-05-28T06:18:03.071Z"
+  },
+  {
+    "roadmap_id": "34f28b3c-e2bc-4af8-a7db-f578bf6cbf40",
+    "topic_name": "Deep Learning",
+    "description": "Advanced deep learning concepts",
+    "order_index": 4,
+    "level": "advanced",
+    "is_completed": false,
+    "id": "809439de-7578-4491-ace2-6d6b0545ae63",
+    "created_at": "2026-05-28T06:18:03.073Z",
+    "updated_at": "2026-05-28T06:18:03.073Z"
+  },
+  {
+    "roadmap_id": "0659f5a3-7869-4e62-9217-bbce52add37e",
+    "topic_name": "Linear Regression",
+    "description": "Simple and multiple linear regression",
+    "order_index": 0,
+    "level": "beginner",
+    "is_completed": true,
+    "id": "169efa04-c6ad-4e93-ad54-373661a6c387",
+    "created_at": "2026-05-28T06:30:44.978Z",
+    "updated_at": "2026-05-28T06:30:44.978Z"
+  },
+  {
+    "roadmap_id": "0659f5a3-7869-4e62-9217-bbce52add37e",
+    "topic_name": "Logistic Regression",
+    "description": "Classification with logistic regression",
+    "order_index": 1,
+    "level": "beginner",
+    "is_completed": true,
+    "id": "5771fbfe-a95e-465a-8c99-902841eb77bc",
+    "created_at": "2026-05-28T06:30:44.980Z",
+    "updated_at": "2026-05-28T06:30:44.980Z"
+  },
+  {
+    "roadmap_id": "0659f5a3-7869-4e62-9217-bbce52add37e",
+    "topic_name": "Decision Trees & Random Forests",
+    "description": "Ensemble learning methods",
+    "order_index": 2,
+    "level": "intermediate",
+    "is_completed": false,
+    "id": "4dbd2e0c-3e95-47dd-a04f-7c284e7847b1",
+    "created_at": "2026-05-28T06:30:44.982Z",
+    "updated_at": "2026-05-28T06:30:44.982Z"
+  },
+  {
+    "roadmap_id": "0659f5a3-7869-4e62-9217-bbce52add37e",
+    "topic_name": "Neural Networks",
+    "description": "ANN, CNN, RNN architectures",
+    "order_index": 3,
+    "level": "intermediate",
+    "is_completed": false,
+    "id": "8e51d1e2-64dc-4a92-a092-ef466bba6e5c",
+    "created_at": "2026-05-28T06:30:44.984Z",
+    "updated_at": "2026-05-28T06:30:44.984Z"
+  },
+  {
+    "roadmap_id": "0659f5a3-7869-4e62-9217-bbce52add37e",
+    "topic_name": "Deep Learning",
+    "description": "Advanced deep learning concepts",
+    "order_index": 4,
+    "level": "advanced",
+    "is_completed": false,
+    "id": "6d8ea833-d41a-407a-8a6e-5cc3f72f69d1",
+    "created_at": "2026-05-28T06:30:44.985Z",
+    "updated_at": "2026-05-28T06:30:44.985Z"
+  }
+]

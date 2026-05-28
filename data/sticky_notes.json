@@ -1,0 +1,120 @@
+[
+  {
+    "student_id": "student-1",
+    "title": "Exam Dates",
+    "content": "Midterms start March 15!\n- DS: March 17\n- Algorithms: March 19\n- Math: March 22",
+    "color": "#FFF8E1",
+    "is_pinned": true,
+    "subject_tag": "exams",
+    "rotation": 2,
+    "id": "cb4ab983-37ed-4f2b-b2d3-2700085aee89",
+    "created_at": "2026-05-28T06:18:03.030Z",
+    "updated_at": "2026-05-28T06:18:03.030Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Book to Read",
+    "content": "\"Designing Data-Intensive Applications\" by Martin Kleppmann. Chapter 3 this week.",
+    "color": "#FFE0F0",
+    "is_pinned": false,
+    "subject_tag": "reading",
+    "rotation": -1.5,
+    "id": "97cc405b-2182-46bc-9d8c-77b0e6bd941e",
+    "created_at": "2026-05-28T06:18:03.031Z",
+    "updated_at": "2026-05-28T06:18:03.031Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Project Idea",
+    "content": "Build a study group matching app using React Native. Could be a great portfolio piece!",
+    "color": "#EDE0FF",
+    "is_pinned": false,
+    "subject_tag": "projects",
+    "rotation": 3,
+    "id": "d46b168f-1a8a-4ee4-b41e-0d02f5f1e511",
+    "created_at": "2026-05-28T06:18:03.033Z",
+    "updated_at": "2026-05-28T06:18:03.033Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Office Hours",
+    "content": "Dr. Patel: Mon/Wed 2-4pm\nDr. Kim: Tue/Thu 1-3pm\nProf. Johnson: Fri 10-12pm",
+    "color": "#E0FFF5",
+    "is_pinned": true,
+    "subject_tag": "academic",
+    "rotation": -2.5,
+    "id": "da2c1205-4feb-4de1-abd8-b2cc77765b01",
+    "created_at": "2026-05-28T06:18:03.034Z",
+    "updated_at": "2026-05-28T06:18:03.034Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Quote",
+    "content": "\"The best time to plant a tree was 20 years ago. The second best time is now.\" — Chinese Proverb",
+    "color": "#FFEDE0",
+    "is_pinned": false,
+    "rotation": 1,
+    "id": "04870f45-8466-41f6-9ee1-ef98f3709673",
+    "created_at": "2026-05-28T06:18:03.036Z",
+    "updated_at": "2026-05-28T06:18:03.036Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Exam Dates",
+    "content": "Midterms start March 15!\n- DS: March 17\n- Algorithms: March 19\n- Math: March 22",
+    "color": "#FFF8E1",
+    "is_pinned": true,
+    "subject_tag": "exams",
+    "rotation": 2,
+    "id": "4d5483b4-6649-40bb-a8bf-232f8277ac9c",
+    "created_at": "2026-05-28T06:30:44.951Z",
+    "updated_at": "2026-05-28T06:30:44.951Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Book to Read",
+    "content": "\"Designing Data-Intensive Applications\" by Martin Kleppmann. Chapter 3 this week.",
+    "color": "#FFE0F0",
+    "is_pinned": false,
+    "subject_tag": "reading",
+    "rotation": -1.5,
+    "id": "efcc56dd-e9a3-4eaf-b5d9-4866110f91ac",
+    "created_at": "2026-05-28T06:30:44.953Z",
+    "updated_at": "2026-05-28T06:30:44.953Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Project Idea",
+    "content": "Build a study group matching app using React Native. Could be a great portfolio piece!",
+    "color": "#EDE0FF",
+    "is_pinned": false,
+    "subject_tag": "projects",
+    "rotation": 3,
+    "id": "51080211-b649-4626-8e1e-e6a4643d0d04",
+    "created_at": "2026-05-28T06:30:44.955Z",
+    "updated_at": "2026-05-28T06:30:44.955Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Office Hours",
+    "content": "Dr. Patel: Mon/Wed 2-4pm\nDr. Kim: Tue/Thu 1-3pm\nProf. Johnson: Fri 10-12pm",
+    "color": "#E0FFF5",
+    "is_pinned": true,
+    "subject_tag": "academic",
+    "rotation": -2.5,
+    "id": "d6d8f9d7-7dc7-42fc-b76c-e6ed8e87a570",
+    "created_at": "2026-05-28T06:30:44.957Z",
+    "updated_at": "2026-05-28T06:30:44.957Z"
+  },
+  {
+    "student_id": "student-1",
+    "title": "Quote",
+    "content": "\"The best time to plant a tree was 20 years ago. The second best time is now.\" — Chinese Proverb",
+    "color": "#FFEDE0",
+    "is_pinned": false,
+    "rotation": 1,
+    "id": "577a5046-6f61-4834-ba7b-0b956af7c634",
+    "created_at": "2026-05-28T06:30:44.958Z",
+    "updated_at": "2026-05-28T06:30:44.958Z"
+  }
+]

@@ -1,0 +1,200 @@
+[
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Data Structures",
+    "credit_hours": 4,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "b692a54a-5a8f-44ed-8860-4480ceeb13a3",
+    "created_at": "2026-05-28T06:18:03.038Z",
+    "updated_at": "2026-05-28T06:18:03.038Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Algorithms",
+    "credit_hours": 4,
+    "grade_letter": "A-",
+    "grade_points": 3.7,
+    "id": "14928c8c-112b-47cb-a134-693e8a655394",
+    "created_at": "2026-05-28T06:18:03.040Z",
+    "updated_at": "2026-05-28T06:18:03.040Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Calculus II",
+    "credit_hours": 3,
+    "grade_letter": "B+",
+    "grade_points": 3.3,
+    "id": "09e7891d-07d3-4cd7-ac27-ff779d5b973e",
+    "created_at": "2026-05-28T06:18:03.042Z",
+    "updated_at": "2026-05-28T06:18:03.042Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Physics I",
+    "credit_hours": 4,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "566f27a9-d8f4-4602-bb15-795aa79c2bda",
+    "created_at": "2026-05-28T06:18:03.044Z",
+    "updated_at": "2026-05-28T06:18:03.044Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "English Composition",
+    "credit_hours": 3,
+    "grade_letter": "B",
+    "grade_points": 3,
+    "id": "659a5f2c-62ff-4b1a-9a28-1ce04ec62ae9",
+    "created_at": "2026-05-28T06:18:03.046Z",
+    "updated_at": "2026-05-28T06:18:03.046Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Advanced Data Structures",
+    "credit_hours": 4,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "ee3a0ab9-920a-4b8c-b2df-4f43957c4476",
+    "created_at": "2026-05-28T06:18:03.047Z",
+    "updated_at": "2026-05-28T06:18:03.047Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Machine Learning",
+    "credit_hours": 3,
+    "grade_letter": "A-",
+    "grade_points": 3.7,
+    "id": "a7e48252-a57a-4558-83a0-5b7ff89fcd4f",
+    "created_at": "2026-05-28T06:18:03.048Z",
+    "updated_at": "2026-05-28T06:18:03.048Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Linear Algebra",
+    "credit_hours": 3,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "9649e837-966f-467c-bf15-1ef6edad19f7",
+    "created_at": "2026-05-28T06:18:03.049Z",
+    "updated_at": "2026-05-28T06:18:03.049Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Physics II",
+    "credit_hours": 4,
+    "grade_letter": "B+",
+    "grade_points": 3.3,
+    "id": "763d6938-a96b-49bd-9297-9308160539a7",
+    "created_at": "2026-05-28T06:18:03.051Z",
+    "updated_at": "2026-05-28T06:18:03.051Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Data Structures",
+    "credit_hours": 4,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "56f7a57e-a6e6-40d5-848b-3508c31cebe9",
+    "created_at": "2026-05-28T06:30:44.960Z",
+    "updated_at": "2026-05-28T06:30:44.960Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Algorithms",
+    "credit_hours": 4,
+    "grade_letter": "A-",
+    "grade_points": 3.7,
+    "id": "1cd3c888-3d15-4f3c-a151-43967b4967a0",
+    "created_at": "2026-05-28T06:30:44.962Z",
+    "updated_at": "2026-05-28T06:30:44.962Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Calculus II",
+    "credit_hours": 3,
+    "grade_letter": "B+",
+    "grade_points": 3.3,
+    "id": "688ffec1-ef52-431e-8fb0-49a0fb146a9c",
+    "created_at": "2026-05-28T06:30:44.964Z",
+    "updated_at": "2026-05-28T06:30:44.964Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "Physics I",
+    "credit_hours": 4,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "3ac7bf8d-bcd5-4a08-a5ad-775bf1759414",
+    "created_at": "2026-05-28T06:30:44.965Z",
+    "updated_at": "2026-05-28T06:30:44.965Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-1",
+    "name": "English Composition",
+    "credit_hours": 3,
+    "grade_letter": "B",
+    "grade_points": 3,
+    "id": "53349a60-e4e2-4cb6-b36b-388997645778",
+    "created_at": "2026-05-28T06:30:44.966Z",
+    "updated_at": "2026-05-28T06:30:44.966Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Advanced Data Structures",
+    "credit_hours": 4,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "fe3a7a84-43e4-4252-bc27-3cdc61234d00",
+    "created_at": "2026-05-28T06:30:44.967Z",
+    "updated_at": "2026-05-28T06:30:44.967Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Machine Learning",
+    "credit_hours": 3,
+    "grade_letter": "A-",
+    "grade_points": 3.7,
+    "id": "17f4ec25-a67f-4d46-856c-ff538b539923",
+    "created_at": "2026-05-28T06:30:44.968Z",
+    "updated_at": "2026-05-28T06:30:44.968Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Linear Algebra",
+    "credit_hours": 3,
+    "grade_letter": "A",
+    "grade_points": 4,
+    "id": "e069f20c-43d7-4438-92b8-b16cb5bed23f",
+    "created_at": "2026-05-28T06:30:44.969Z",
+    "updated_at": "2026-05-28T06:30:44.969Z"
+  },
+  {
+    "student_id": "student-1",
+    "semester_id": "sem-2",
+    "name": "Physics II",
+    "credit_hours": 4,
+    "grade_letter": "B+",
+    "grade_points": 3.3,
+    "id": "bd13a86f-ded3-46f3-ba1f-4533cad3a468",
+    "created_at": "2026-05-28T06:30:44.970Z",
+    "updated_at": "2026-05-28T06:30:44.970Z"
+  }
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "student_id": "student-1",
+    "name": "Morning Study",
+    "icon": "📚",
+    "frequency": "daily",
+    "color": "#6366f1",
+    "id": "90fdefac-b2a6-41a8-9d5d-9c876da919ac",
+    "created_at": "2026-05-28T06:18:02.879Z",
+    "updated_at": "2026-05-28T06:18:02.879Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Exercise",
+    "icon": "🏃",
+    "frequency": "daily",
+    "color": "#00C2A8",
+    "id": "2c74791a-3cfe-4f72-a60c-d113b46de8de",
+    "created_at": "2026-05-28T06:18:02.880Z",
+    "updated_at": "2026-05-28T06:18:02.880Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Read News",
+    "icon": "📰",
+    "frequency": "daily",
+    "color": "#F5A623",
+    "id": "21a35d20-9b53-4120-8157-23bc6a13ed78",
+    "created_at": "2026-05-28T06:18:02.881Z",
+    "updated_at": "2026-05-28T06:18:02.881Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Meditate",
+    "icon": "🧘",
+    "frequency": "daily",
+    "color": "#8B5CF6",
+    "id": "29f3f84e-6be7-4ea9-99cc-c7ac297140e0",
+    "created_at": "2026-05-28T06:18:02.882Z",
+    "updated_at": "2026-05-28T06:18:02.882Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Review Notes",
+    "icon": "📝",
+    "frequency": "weekly",
+    "color": "#FF6B6B",
+    "id": "5b763737-160e-4e82-b8a6-0beb36dbe2bd",
+    "created_at": "2026-05-28T06:18:02.883Z",
+    "updated_at": "2026-05-28T06:18:02.883Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Morning Study",
+    "icon": "📚",
+    "frequency": "daily",
+    "color": "#6366f1",
+    "id": "f36b1e7b-f937-4ad8-948b-f1592a011d12",
+    "created_at": "2026-05-28T06:30:44.836Z",
+    "updated_at": "2026-05-28T06:30:44.836Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Exercise",
+    "icon": "🏃",
+    "frequency": "daily",
+    "color": "#00C2A8",
+    "id": "0d38792d-3bca-4a56-b397-7cc2b1d13c80",
+    "created_at": "2026-05-28T06:30:44.838Z",
+    "updated_at": "2026-05-28T06:30:44.838Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Read News",
+    "icon": "📰",
+    "frequency": "daily",
+    "color": "#F5A623",
+    "id": "585914bc-ba93-4b38-a4e4-69ccc818cf2e",
+    "created_at": "2026-05-28T06:30:44.839Z",
+    "updated_at": "2026-05-28T06:30:44.839Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Meditate",
+    "icon": "🧘",
+    "frequency": "daily",
+    "color": "#8B5CF6",
+    "id": "95d175fe-b9f1-4377-a41e-8e1d1a2cf672",
+    "created_at": "2026-05-28T06:30:44.841Z",
+    "updated_at": "2026-05-28T06:30:44.841Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Review Notes",
+    "icon": "📝",
+    "frequency": "weekly",
+    "color": "#FF6B6B",
+    "id": "4fda3159-c2f6-497e-9a3a-0b1a308d32b9",
+    "created_at": "2026-05-28T06:30:44.842Z",
+    "updated_at": "2026-05-28T06:30:44.842Z"
+  }
+]

@@ -1,0 +1,882 @@
+[
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-28",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "3f41fdc0-83bf-496c-b094-580c7ee5b64f",
+    "created_at": "2026-05-28T06:18:03.075Z",
+    "updated_at": "2026-05-28T06:18:03.075Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-27",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "f7c5e14f-89f8-454d-8457-5e3412274a8b",
+    "created_at": "2026-05-28T06:18:03.077Z",
+    "updated_at": "2026-05-28T06:18:03.077Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-26",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "bb49f31d-5a61-4d6b-bd4f-07279dddc580",
+    "created_at": "2026-05-28T06:18:03.077Z",
+    "updated_at": "2026-05-28T06:18:03.077Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-25",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "eb2ee2ef-a8e9-4429-aec5-3e5316b38dba",
+    "created_at": "2026-05-28T06:18:03.079Z",
+    "updated_at": "2026-05-28T06:18:03.079Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-22",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "6d3c3ef4-5234-434e-b77f-587c9bd07c26",
+    "created_at": "2026-05-28T06:18:03.081Z",
+    "updated_at": "2026-05-28T06:18:03.081Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-21",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "dae5dac7-ef24-4d6f-bac6-e8dcfb2c8440",
+    "created_at": "2026-05-28T06:18:03.082Z",
+    "updated_at": "2026-05-28T06:18:03.082Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-20",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "3c383e00-41ef-430e-82a2-ee6aae31480c",
+    "created_at": "2026-05-28T06:18:03.083Z",
+    "updated_at": "2026-05-28T06:18:03.083Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-19",
+    "status": "absent",
+    "timetable_slot_id": "slot-1",
+    "id": "c2d87b22-9292-4e16-abb1-b272b2aa8380",
+    "created_at": "2026-05-28T06:18:03.084Z",
+    "updated_at": "2026-05-28T06:18:03.084Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-18",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "d7ab9c04-6f91-4e1e-ab31-9c45b3683cc8",
+    "created_at": "2026-05-28T06:18:03.086Z",
+    "updated_at": "2026-05-28T06:18:03.086Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-15",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "8361a6b1-f2b6-479e-823f-89e888306ff3",
+    "created_at": "2026-05-28T06:18:03.087Z",
+    "updated_at": "2026-05-28T06:18:03.087Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-14",
+    "status": "absent",
+    "timetable_slot_id": "slot-1",
+    "id": "7603a16d-e5b9-4ea8-86c9-173198bb6432",
+    "created_at": "2026-05-28T06:18:03.089Z",
+    "updated_at": "2026-05-28T06:18:03.089Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-13",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "3c6897c9-f05b-40a8-86b1-798345fdf4d1",
+    "created_at": "2026-05-28T06:18:03.090Z",
+    "updated_at": "2026-05-28T06:18:03.090Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-12",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "a8b1c266-ecf2-47d6-a1a4-23ac63c99f39",
+    "created_at": "2026-05-28T06:18:03.090Z",
+    "updated_at": "2026-05-28T06:18:03.090Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-11",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "f46698dc-22a4-4309-b4a6-22053ae749e4",
+    "created_at": "2026-05-28T06:18:03.091Z",
+    "updated_at": "2026-05-28T06:18:03.091Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-08",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "4bf0ed87-37c6-4440-8539-760ebca298ad",
+    "created_at": "2026-05-28T06:18:03.093Z",
+    "updated_at": "2026-05-28T06:18:03.093Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-07",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "bf97947c-28d7-4d42-af86-d3a01e8f3b34",
+    "created_at": "2026-05-28T06:18:03.095Z",
+    "updated_at": "2026-05-28T06:18:03.095Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-06",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "3d429280-fd7f-4faf-9d1f-47e65cfb29c8",
+    "created_at": "2026-05-28T06:18:03.096Z",
+    "updated_at": "2026-05-28T06:18:03.096Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-05",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "bbba7ab7-f89d-49ab-8c4a-e88326fec413",
+    "created_at": "2026-05-28T06:18:03.097Z",
+    "updated_at": "2026-05-28T06:18:03.097Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-04",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "a9738989-5fcf-40a6-9a83-5e6ac4e24f9f",
+    "created_at": "2026-05-28T06:18:03.098Z",
+    "updated_at": "2026-05-28T06:18:03.098Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-01",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "f7e9feab-5b97-4dba-834e-033d1a797b65",
+    "created_at": "2026-05-28T06:18:03.100Z",
+    "updated_at": "2026-05-28T06:18:03.100Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-30",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "0134c205-a114-4116-98ed-3f76e546a832",
+    "created_at": "2026-05-28T06:18:03.103Z",
+    "updated_at": "2026-05-28T06:18:03.103Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-29",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "5b19fcc0-4632-4175-b275-46f9a25b3c14",
+    "created_at": "2026-05-28T06:18:03.104Z",
+    "updated_at": "2026-05-28T06:18:03.104Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-28",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "d77aa461-5bad-4a2b-b3b7-e778df3c9162",
+    "created_at": "2026-05-28T06:18:03.105Z",
+    "updated_at": "2026-05-28T06:18:03.105Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-27",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "d2db3d40-a24a-4783-900e-c0ce06df275c",
+    "created_at": "2026-05-28T06:18:03.107Z",
+    "updated_at": "2026-05-28T06:18:03.107Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-24",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "e56c595b-1657-4649-9890-58bc49970ee4",
+    "created_at": "2026-05-28T06:18:03.109Z",
+    "updated_at": "2026-05-28T06:18:03.109Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-23",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "c18cc05f-4970-4e35-83ca-64cb1b0853e5",
+    "created_at": "2026-05-28T06:18:03.110Z",
+    "updated_at": "2026-05-28T06:18:03.110Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-22",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "a3b92812-f1e1-4b5a-bef0-3b306bbeb06d",
+    "created_at": "2026-05-28T06:18:03.111Z",
+    "updated_at": "2026-05-28T06:18:03.111Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-21",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "ffd8469a-b506-4a07-9ba8-654ad1713387",
+    "created_at": "2026-05-28T06:18:03.112Z",
+    "updated_at": "2026-05-28T06:18:03.112Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-20",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "74457dbf-034a-48d9-a09d-c04727e61576",
+    "created_at": "2026-05-28T06:18:03.115Z",
+    "updated_at": "2026-05-28T06:18:03.115Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-17",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "089329f1-9e50-4c2e-b051-6ffe4d305089",
+    "created_at": "2026-05-28T06:18:03.116Z",
+    "updated_at": "2026-05-28T06:18:03.116Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-16",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "c4966e73-a9e6-44dd-be48-e2abaa9625fc",
+    "created_at": "2026-05-28T06:18:03.118Z",
+    "updated_at": "2026-05-28T06:18:03.118Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-15",
+    "status": "absent",
+    "timetable_slot_id": "slot-1",
+    "id": "a7fc519b-70f3-48ad-8368-4fe346d47454",
+    "created_at": "2026-05-28T06:18:03.119Z",
+    "updated_at": "2026-05-28T06:18:03.119Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-14",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "bb4c4b1f-d677-4c2c-8284-6312445888fe",
+    "created_at": "2026-05-28T06:18:03.121Z",
+    "updated_at": "2026-05-28T06:18:03.121Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-13",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "7db5403e-61d5-4e66-a354-ad599b32f5cf",
+    "created_at": "2026-05-28T06:18:03.122Z",
+    "updated_at": "2026-05-28T06:18:03.122Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-10",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "de2ec5ec-38d3-4172-bb1f-35b3e294dac1",
+    "created_at": "2026-05-28T06:18:03.124Z",
+    "updated_at": "2026-05-28T06:18:03.124Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-09",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "2ae98fd2-93e2-4fba-8a3f-0ad9b604d10b",
+    "created_at": "2026-05-28T06:18:03.126Z",
+    "updated_at": "2026-05-28T06:18:03.126Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-08",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "0333781e-0b9e-4ef9-b8e4-57d011163a0b",
+    "created_at": "2026-05-28T06:18:03.128Z",
+    "updated_at": "2026-05-28T06:18:03.128Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-07",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "f0cc1341-2fe5-4491-8bf8-65ebfd58d53c",
+    "created_at": "2026-05-28T06:18:03.130Z",
+    "updated_at": "2026-05-28T06:18:03.130Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-06",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "da27ddae-cd17-4cc9-8ae8-0005f1adbc32",
+    "created_at": "2026-05-28T06:18:03.131Z",
+    "updated_at": "2026-05-28T06:18:03.131Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-03",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "155d6566-3545-42b2-a266-1d609e45dd34",
+    "created_at": "2026-05-28T06:18:03.133Z",
+    "updated_at": "2026-05-28T06:18:03.133Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-02",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "a481a2d6-4ca6-41cb-b669-7cca73432d27",
+    "created_at": "2026-05-28T06:18:03.135Z",
+    "updated_at": "2026-05-28T06:18:03.135Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-01",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "1bedfb7e-c10d-4a7f-b633-620934621781",
+    "created_at": "2026-05-28T06:18:03.136Z",
+    "updated_at": "2026-05-28T06:18:03.136Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-03-31",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "ea160a47-c6f6-4747-b996-345424ac5499",
+    "created_at": "2026-05-28T06:18:03.138Z",
+    "updated_at": "2026-05-28T06:18:03.138Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-03-30",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "f78f3616-6266-4355-8c81-7b28515f39de",
+    "created_at": "2026-05-28T06:18:03.139Z",
+    "updated_at": "2026-05-28T06:18:03.139Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-28",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "b46a5be7-e3cc-4119-8220-90ba66f00826",
+    "created_at": "2026-05-28T06:30:44.986Z",
+    "updated_at": "2026-05-28T06:30:44.986Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-27",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "6e8ac7f3-18ad-42c2-b5d2-278befd1829f",
+    "created_at": "2026-05-28T06:30:44.988Z",
+    "updated_at": "2026-05-28T06:30:44.988Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-26",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "bc5102e9-f8c7-43b6-b80e-1539c6f90bf4",
+    "created_at": "2026-05-28T06:30:44.990Z",
+    "updated_at": "2026-05-28T06:30:44.990Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-25",
+    "status": "absent",
+    "timetable_slot_id": "slot-1",
+    "id": "b69ff9b0-345b-44cd-b2fd-357e0c1aa907",
+    "created_at": "2026-05-28T06:30:44.991Z",
+    "updated_at": "2026-05-28T06:30:44.991Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-22",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "2894922c-0efe-4c2f-b959-7090535f6fec",
+    "created_at": "2026-05-28T06:30:44.992Z",
+    "updated_at": "2026-05-28T06:30:44.992Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-21",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "73dd3d42-92c6-4594-8f42-295c08af0333",
+    "created_at": "2026-05-28T06:30:44.992Z",
+    "updated_at": "2026-05-28T06:30:44.992Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-20",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "fc6bb2d4-8a06-4926-b303-485954075062",
+    "created_at": "2026-05-28T06:30:44.994Z",
+    "updated_at": "2026-05-28T06:30:44.994Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-19",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "a1cd40de-d657-4809-b93f-f16281b84de3",
+    "created_at": "2026-05-28T06:30:44.996Z",
+    "updated_at": "2026-05-28T06:30:44.996Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-18",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "7b312944-ef81-406a-af3e-d0ee35f24163",
+    "created_at": "2026-05-28T06:30:44.997Z",
+    "updated_at": "2026-05-28T06:30:44.997Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-15",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "6063d13d-0fdb-4ad7-8e56-ade095decd40",
+    "created_at": "2026-05-28T06:30:44.998Z",
+    "updated_at": "2026-05-28T06:30:44.998Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-14",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "767425a6-3d09-4fbd-8370-fa568e9e36cb",
+    "created_at": "2026-05-28T06:30:44.999Z",
+    "updated_at": "2026-05-28T06:30:44.999Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-13",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "34542e37-9730-4299-8bd7-082ac24b3303",
+    "created_at": "2026-05-28T06:30:45.000Z",
+    "updated_at": "2026-05-28T06:30:45.000Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-12",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "029a294e-b04c-4d7d-b352-7f3f3a5e5aff",
+    "created_at": "2026-05-28T06:30:45.002Z",
+    "updated_at": "2026-05-28T06:30:45.002Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-11",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "3a6c77e8-af24-45d6-80d3-fc4fb623baa1",
+    "created_at": "2026-05-28T06:30:45.003Z",
+    "updated_at": "2026-05-28T06:30:45.003Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-08",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "dc6dfd2d-a57c-47f3-8dd7-ce33006b6994",
+    "created_at": "2026-05-28T06:30:45.004Z",
+    "updated_at": "2026-05-28T06:30:45.004Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-07",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "cad1f40b-802a-4518-b6de-4317901ac861",
+    "created_at": "2026-05-28T06:30:45.005Z",
+    "updated_at": "2026-05-28T06:30:45.005Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-06",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "24bd2ff1-b5b5-4ff9-a6c1-7c67f5b8e22d",
+    "created_at": "2026-05-28T06:30:45.006Z",
+    "updated_at": "2026-05-28T06:30:45.006Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-05",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "9a94e12a-b6c6-4135-b58d-c882ee23d094",
+    "created_at": "2026-05-28T06:30:45.007Z",
+    "updated_at": "2026-05-28T06:30:45.007Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-04",
+    "status": "absent",
+    "timetable_slot_id": "slot-1",
+    "id": "05b7f45c-73ac-4a14-b267-c80e965d2f71",
+    "created_at": "2026-05-28T06:30:45.008Z",
+    "updated_at": "2026-05-28T06:30:45.008Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-05-01",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "36b78ab7-1017-4030-a4e8-50212fdf3f4f",
+    "created_at": "2026-05-28T06:30:45.009Z",
+    "updated_at": "2026-05-28T06:30:45.009Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-30",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "62fa9537-8ab2-4fa4-b86c-c0915b4c32a2",
+    "created_at": "2026-05-28T06:30:45.010Z",
+    "updated_at": "2026-05-28T06:30:45.010Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-29",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "758a7866-4e06-409e-b73a-eee8d4f49804",
+    "created_at": "2026-05-28T06:30:45.012Z",
+    "updated_at": "2026-05-28T06:30:45.012Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-28",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "8c69a11f-524c-4d95-af11-3e2c51217741",
+    "created_at": "2026-05-28T06:30:45.012Z",
+    "updated_at": "2026-05-28T06:30:45.012Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-27",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "0d4d7795-47a8-45a0-9c02-fd469690ee46",
+    "created_at": "2026-05-28T06:30:45.013Z",
+    "updated_at": "2026-05-28T06:30:45.013Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-24",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "92732d6b-95e1-44a7-a5c6-b7bc3f25f0ac",
+    "created_at": "2026-05-28T06:30:45.015Z",
+    "updated_at": "2026-05-28T06:30:45.015Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-23",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "6d12e6de-1798-41ea-8381-d96ae2ac64db",
+    "created_at": "2026-05-28T06:30:45.016Z",
+    "updated_at": "2026-05-28T06:30:45.016Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-22",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "11b9d4ed-e323-4fc0-9ec7-f55268a22235",
+    "created_at": "2026-05-28T06:30:45.017Z",
+    "updated_at": "2026-05-28T06:30:45.017Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-21",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "49bdbc6b-17ee-4f52-94e3-c29738b595d6",
+    "created_at": "2026-05-28T06:30:45.018Z",
+    "updated_at": "2026-05-28T06:30:45.018Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-20",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "0a7d6e20-c603-421c-af13-8aca9c4d3684",
+    "created_at": "2026-05-28T06:30:45.020Z",
+    "updated_at": "2026-05-28T06:30:45.020Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-17",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "13932c20-aeb0-474b-b895-6cd7cb7f9515",
+    "created_at": "2026-05-28T06:30:45.021Z",
+    "updated_at": "2026-05-28T06:30:45.021Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-16",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "75c82574-2d4c-4342-b341-ca4d6551dcc5",
+    "created_at": "2026-05-28T06:30:45.022Z",
+    "updated_at": "2026-05-28T06:30:45.022Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-15",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "ff372d5e-1f9d-4469-b023-8b595a28f9cf",
+    "created_at": "2026-05-28T06:30:45.023Z",
+    "updated_at": "2026-05-28T06:30:45.023Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-14",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "3c60f127-dae8-4a85-a501-60981622823b",
+    "created_at": "2026-05-28T06:30:45.024Z",
+    "updated_at": "2026-05-28T06:30:45.024Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-13",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "440d6fe3-1ce9-4f27-a7a0-2660554bdbca",
+    "created_at": "2026-05-28T06:30:45.025Z",
+    "updated_at": "2026-05-28T06:30:45.025Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-10",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "0dd6800d-9cb2-41f0-88b7-896ddde7cadd",
+    "created_at": "2026-05-28T06:30:45.026Z",
+    "updated_at": "2026-05-28T06:30:45.026Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-09",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "93acdc1c-284d-410d-b04b-bc9daad64d8a",
+    "created_at": "2026-05-28T06:30:45.027Z",
+    "updated_at": "2026-05-28T06:30:45.027Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-08",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "98232ea9-f05d-4198-942c-a51232c96956",
+    "created_at": "2026-05-28T06:30:45.028Z",
+    "updated_at": "2026-05-28T06:30:45.028Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-07",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "f65d1f51-5b69-40be-89a6-3bc1211276d5",
+    "created_at": "2026-05-28T06:30:45.029Z",
+    "updated_at": "2026-05-28T06:30:45.029Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-06",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "d1fbadfb-2651-4e09-983e-91ea4b95ef4d",
+    "created_at": "2026-05-28T06:30:45.030Z",
+    "updated_at": "2026-05-28T06:30:45.030Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-03",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "14bc9e36-8e74-4ebe-9fdc-cb6a75abe096",
+    "created_at": "2026-05-28T06:30:45.031Z",
+    "updated_at": "2026-05-28T06:30:45.031Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-02",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "3eac1f73-76a0-4d65-91ff-ee9bed2206fd",
+    "created_at": "2026-05-28T06:30:45.032Z",
+    "updated_at": "2026-05-28T06:30:45.032Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-04-01",
+    "status": "leave",
+    "timetable_slot_id": "slot-1",
+    "id": "9374310d-2661-46f5-8ebb-c1bc7bdd7545",
+    "created_at": "2026-05-28T06:30:45.033Z",
+    "updated_at": "2026-05-28T06:30:45.033Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-03-31",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "7d503bcb-a91a-4f4d-98c0-828e2851bca2",
+    "created_at": "2026-05-28T06:30:45.034Z",
+    "updated_at": "2026-05-28T06:30:45.034Z"
+  },
+  {
+    "student_id": "student-1",
+    "subject_id": "ds-1",
+    "date": "2026-03-30",
+    "status": "present",
+    "timetable_slot_id": "slot-1",
+    "id": "0316e903-e015-4c9e-9f83-4c40d6e312ab",
+    "created_at": "2026-05-28T06:30:45.035Z",
+    "updated_at": "2026-05-28T06:30:45.035Z"
+  }
+]

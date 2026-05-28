@@ -1,0 +1,56 @@
+[
+  {
+    "student_id": "student-1",
+    "name": "Study Guides",
+    "color": "#6366f1",
+    "icon": "📚",
+    "id": "d29bdf43-ded7-4160-bfd2-1dbf399a2854",
+    "created_at": "2026-05-28T06:18:03.147Z",
+    "updated_at": "2026-05-28T06:18:03.147Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Video Tutorials",
+    "color": "#FF6B6B",
+    "icon": "🎬",
+    "id": "8cb3bb70-0d04-4981-a0e5-8979e93853ca",
+    "created_at": "2026-05-28T06:18:03.150Z",
+    "updated_at": "2026-05-28T06:18:03.150Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Practice",
+    "color": "#00C2A8",
+    "icon": "⚡",
+    "id": "57f53590-49fe-4a30-927f-3c251905e2da",
+    "created_at": "2026-05-28T06:18:03.152Z",
+    "updated_at": "2026-05-28T06:18:03.152Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Study Guides",
+    "color": "#6366f1",
+    "icon": "📚",
+    "id": "1bc34778-5433-43d5-9976-30e630c08cef",
+    "created_at": "2026-05-28T06:30:45.040Z",
+    "updated_at": "2026-05-28T06:30:45.040Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Video Tutorials",
+    "color": "#FF6B6B",
+    "icon": "🎬",
+    "id": "840f5bf6-97a9-4413-8ec0-df06c60eb5c5",
+    "created_at": "2026-05-28T06:30:45.041Z",
+    "updated_at": "2026-05-28T06:30:45.041Z"
+  },
+  {
+    "student_id": "student-1",
+    "name": "Practice",
+    "color": "#00C2A8",
+    "icon": "⚡",
+    "id": "b81a9859-67f7-472d-a926-5281119fa2d6",
+    "created_at": "2026-05-28T06:30:45.042Z",
+    "updated_at": "2026-05-28T06:30:45.042Z"
+  }
+]

@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFDF8;
+    color: #1a1a2e;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(59, 31, 168, 0.12);
+    color: #3B1FA8;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(59, 31, 168, 0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 31, 168, 0.25);
+  }
+}
+
+@layer components {
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #1a1a2e;
+    letter-spacing: -0.03em;
+  }
+
+  .section-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 300;
+    color: rgba(26, 26, 46, 0.6);
+    line-height: 1.4;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 31, 168, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(59, 31, 168, 0.06);
+  }
+
+  .glass-card-strong {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(59, 31, 168, 0.1);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(59, 31, 168, 0.08);
+  }
+
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 12px 40px rgba(59, 31, 168, 0.1);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #3B1FA8 0%, #6B3FFF 50%, #F5A623 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  @media (max-width: 768px) {
+    .section-container {
+      padding: 0 20px;
+    }
+  }
+}
+
+/* Animated gradient blob */
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animate-blob-delayed {
+  animation: blob 8s infinite 2s;
+}
+
+.animate-blob-slow {
+  animation: blob 9s infinite 4s;
+}
+
+/* Grain texture overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Quill editor custom styles */
+.ql-editor {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 200px;
+}
+
+.ql-editor h1, .ql-editor h2 {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Toast styles */
+.toast-premium {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(59, 31, 168, 0.1) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(59, 31, 168, 0.1) !important;
+  color: #1a1a2e !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, rgba(59, 31, 168, 0.04) 25%, rgba(59, 31, 168, 0.08) 50%, rgba(59, 31, 168, 0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

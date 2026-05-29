@@ -1078,5 +1078,95 @@
     "id": "247c3da1-b2f3-48f6-be3c-d84625189106",
     "created_at": "2026-05-28T06:30:44.907Z",
     "updated_at": "2026-05-28T06:30:44.907Z"
+  },
+  {
+    "habit_id": "90fdefac-b2a6-41a8-9d5d-9c876da919ac",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "f240cd4f-656a-41ff-ac58-eb25fb9d6a6d",
+    "created_at": "2026-05-28T10:00:39.273Z",
+    "updated_at": "2026-05-28T10:00:39.273Z"
+  },
+  {
+    "habit_id": "90fdefac-b2a6-41a8-9d5d-9c876da919ac",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "0ed1e2ac-049d-4e45-9374-65822ad9f631",
+    "created_at": "2026-05-28T10:00:40.298Z",
+    "updated_at": "2026-05-28T10:00:40.298Z"
+  },
+  {
+    "habit_id": "2c74791a-3cfe-4f72-a60c-d113b46de8de",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "15cad01a-a18f-4616-be33-79cca1a6fec3",
+    "created_at": "2026-05-28T11:39:42.724Z",
+    "updated_at": "2026-05-28T11:39:42.724Z"
+  },
+  {
+    "habit_id": "2c74791a-3cfe-4f72-a60c-d113b46de8de",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "7f17da14-2fbe-4b83-a391-a74a7173747d",
+    "created_at": "2026-05-28T11:39:42.935Z",
+    "updated_at": "2026-05-28T11:39:42.935Z"
+  },
+  {
+    "habit_id": "80ee6053-cf8e-4bd1-8136-5a27ff5c6e8f",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "77f85959-7b42-4916-991c-5eef71a584c5",
+    "created_at": "2026-05-28T11:40:02.610Z",
+    "updated_at": "2026-05-28T11:40:02.610Z"
+  },
+  {
+    "habit_id": "4fda3159-c2f6-497e-9a3a-0b1a308d32b9",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "f1c06b7f-4a6e-4977-be84-7f64fedec7e7",
+    "created_at": "2026-05-28T11:40:05.189Z",
+    "updated_at": "2026-05-28T11:40:05.189Z"
+  },
+  {
+    "habit_id": "4fda3159-c2f6-497e-9a3a-0b1a308d32b9",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "4d709525-b121-44b9-924b-8ffbf3b2f260",
+    "created_at": "2026-05-28T11:40:07.376Z",
+    "updated_at": "2026-05-28T11:40:07.376Z"
+  },
+  {
+    "habit_id": "80ee6053-cf8e-4bd1-8136-5a27ff5c6e8f",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "328252c4-6a1e-4ffc-b8e6-af1bd57aba73",
+    "created_at": "2026-05-28T12:10:29.994Z",
+    "updated_at": "2026-05-28T12:10:29.994Z"
+  },
+  {
+    "habit_id": "80ee6053-cf8e-4bd1-8136-5a27ff5c6e8f",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "4f857f2d-e41a-46ef-9daa-6245f87b3f2a",
+    "created_at": "2026-05-28T12:10:30.632Z",
+    "updated_at": "2026-05-28T12:10:30.632Z"
+  },
+  {
+    "habit_id": "21a35d20-9b53-4120-8157-23bc6a13ed78",
+    "student_id": "student-1",
+    "completed_date": "2026-05-28",
+    "note": "",
+    "id": "4db4db4a-797e-433e-8cf9-5d7b18f77c8c",
+    "created_at": "2026-05-28T14:17:28.520Z",
+    "updated_at": "2026-05-28T14:17:28.520Z"
   }
 ]

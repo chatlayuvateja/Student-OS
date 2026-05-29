@@ -28,8 +28,9 @@ async function putData(url, body) {
   return data.data;
 }
 
-async function deleteData(url) {
-  const { data } = await api.delete(url);
+async function deleteData(url, body) {
+  const config = body ? { data: body } : {};
+  const { data } = await api.delete(url, config);
   return data.data;
 }
 
@@ -294,6 +295,14 @@ export function useAddTopic() {
   });
 }
 
+export function useDeleteTopic() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (topicId) => deleteData(`/roadmaps/topic/${topicId}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['roadmaps'] }); },
+  });
+}
+
 // === Attendance ===
 export function useAttendanceSummary() {
   return useQuery({ queryKey: ['attendance'], queryFn: () => fetchData(`/attendance/summary/${STUDENT_ID}`) });
@@ -326,11 +335,77 @@ export function useCreateResource() {
   });
 }
 
+export function useUpdateResource() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...updates }) => putData(`/resources/${id}`, updates),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['resources'] }); toast.success('Resource updated'); },
+  });
+}
+
 export function useDeleteResource() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id) => deleteData(`/resources/${id}`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['resources'] }); toast.success('Resource removed'); },
+  });
+}
+
+// === Topic Resources ===
+export function useTopicResources(topicId) {
+  return useQuery({
+    queryKey: ['topic-resources', topicId],
+    queryFn: () => fetchData(`/roadmaps/topic/${topicId}/resources`),
+    enabled: !!topicId,
+  });
+}
+
+export function useAddTopicResource() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ topicId, ...data }) => postData(`/roadmaps/topic/${topicId}/resources`, data),
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: ['topic-resources', variables.topicId] });
+      toast.success('Resource added to topic');
+    },
+  });
+}
+
+export function useUpdateTopicResource() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ topicId, resourceId, ...data }) => putData(`/roadmaps/topic/${topicId}/resources/${resourceId}`, data),
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: ['topic-resources', variables.topicId] });
+      toast.success('Resource updated');
+    },
+  });
+}
+
+export function useDeleteTopicResource() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ topicId, resourceId }) => deleteData(`/roadmaps/topic/${topicId}/resources/${resourceId}`),
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: ['topic-resources', variables.topicId] });
+      toast.success('Resource removed from topic');
+    },
+  });
+}
+
+export function useDeleteRoadmap() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => deleteData(`/roadmaps/${id}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['roadmaps'] }); toast.success('Roadmap deleted'); },
+  });
+}
+
+export function useUpdateRoadmap() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...updates }) => putData(`/roadmaps/${id}`, updates),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['roadmaps'] }); toast.success('Roadmap updated'); },
   });
 }
 
@@ -347,6 +422,54 @@ export function useSendMessage() {
   });
 }
 
+// === Settings ===
+export function useSettings() {
+  return useQuery({
+    queryKey: ['settings'],
+    queryFn: () => fetchData(`/settings/${STUDENT_ID}`),
+  });
+}
+
+export function useUpdateSettings() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (updates) => putData(`/settings/${STUDENT_ID}`, updates),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['settings'] }); toast.success('Settings updated'); },
+  });
+}
+
+// === Subjects ===
+export function useSubjects() {
+  return useQuery({
+    queryKey: ['subjects'],
+    queryFn: () => fetchData(`/subjects/${STUDENT_ID}`),
+  });
+}
+
+export function useCreateSubject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (subject) => postData('/subjects', { ...subject, student_id: STUDENT_ID }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['subjects'] }); toast.success('Subject added'); },
+  });
+}
+
+export function useUpdateSubject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...updates }) => putData(`/subjects/${id}`, updates),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['subjects'] }); toast.success('Subject updated'); },
+  });
+}
+
+export function useDeleteSubject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => deleteData(`/subjects/${id}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['subjects'] }); toast.success('Subject removed'); },
+  });
+}
+
 // === Backup ===
 export function useDownloadBackup() {
   return () => {
@@ -354,8 +477,55 @@ export function useDownloadBackup() {
   };
 }
 
+export function useResetBackup() {
+  return useMutation({
+    mutationFn: ({ filename, confirm }) => deleteData(`/backup/reset/${filename}`, { confirm }),
+    onSuccess: () => toast.success('Data reset'),
+  });
+}
+
 export function useCollegeCalendar() {
   return useQuery({ queryKey: ['calendar'], queryFn: () => fetchData(`/college-calendar/${STUDENT_ID}`) });
+}
+
+export function useCreateCollegeEvent() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (event) => postData('/college-calendar', { ...event, student_id: STUDENT_ID }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['calendar'] }); toast.success('Event created'); },
+  });
+}
+
+// === Working Days Config ===
+export function useWorkingDaysConfig() {
+  return useQuery({
+    queryKey: ['working-days'],
+    queryFn: () => fetchData(`/working-days/${STUDENT_ID}`),
+  });
+}
+
+export function useUpdateWorkingDays() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (working_days) => putData(`/working-days/${STUDENT_ID}`, { working_days }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['working-days'] }); toast.success('Working days updated'); },
+  });
+}
+
+export function useAddHoliday() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ date, reason }) => postData(`/working-days/${STUDENT_ID}/holiday`, { date, reason }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['working-days'] }); toast.success('Holiday added'); },
+  });
+}
+
+export function useRemoveHoliday() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (date) => deleteData(`/working-days/${STUDENT_ID}/holiday/${date}`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['working-days'] }); toast.success('Holiday removed'); },
+  });
 }
 
 export default api;

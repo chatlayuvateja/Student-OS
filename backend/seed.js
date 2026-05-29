@@ -177,7 +177,7 @@ async function seed() {
         student_id: studentId,
         subject_id: 'ds-1',
         date: d.toISOString().split('T')[0],
-        status: Math.random() > 0.15 ? 'present' : Math.random() > 0.5 ? 'absent' : 'leave',
+        status: Math.random() > 0.15 ? 'present' : Math.random() > 0.5 ? 'absent' : 'bunk',
         timetable_slot_id: 'slot-1',
       });
     }

@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Lazy load sections
+const SettingsSection = lazy(() => import('./features/settings/SettingsSection'));
 const HeroSection = lazy(() => import('./features/hero/HeroSection'));
 const TimetableSection = lazy(() => import('./features/timetable/TimetableSection'));
 const AIChatSection = lazy(() => import('./features/aichat/AIChatSection'));
@@ -32,6 +33,7 @@ function SectionSkeleton() {
 
 function App() {
   const [showLoader, setShowLoader] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -52,6 +54,7 @@ function App() {
 
   const sections = [
     { id: 'hero', Component: HeroSection },
+    { id: 'profile', Component: ProfileSection, title: 'Profile' },
     { id: 'timetable', Component: TimetableSection, title: 'Schedule' },
     { id: 'notes', Component: NotesSection, title: 'Notes' },
     { id: 'aichat', Component: AIChatSection, title: 'AI Assistant' },
@@ -62,7 +65,6 @@ function App() {
     { id: 'roadmap', Component: RoadmapSection, title: 'Roadmap' },
     { id: 'attendance', Component: AttendanceSection, title: 'Attendance' },
     { id: 'resources', Component: ResourcesSection, title: 'Resources' },
-    { id: 'profile', Component: ProfileSection, title: 'Profile' },
   ];
 
   return (
@@ -74,7 +76,11 @@ function App() {
       )}
 
       <Suspense fallback={null}>
-        <Navbar />
+        <Navbar onToggleSettings={() => setShowSettings(true)} />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <SettingsSection isOpen={showSettings} onClose={() => setShowSettings(false)} />
       </Suspense>
 
       <main className="bg-bg min-h-screen">

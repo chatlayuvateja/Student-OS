@@ -101,7 +101,7 @@ export const attendanceSchema = z.object({
   student_id: z.string().min(1),
   subject_id: z.string(),
   date: z.string(),
-  status: z.enum(['present', 'absent', 'leave', 'holiday']),
+  status: z.enum(['present', 'absent', 'bunk', 'holiday']),
   timetable_slot_id: z.string().optional().default(''),
 });
 
@@ -128,6 +128,49 @@ export const profileSchema = z.object({
   timezone: z.string().optional(),
   subjects: z.array(z.string()).optional(),
   profile_photo_url: z.string().nullable().optional(),
+});
+
+export const subjectSchema = z.object({
+  student_id: z.string().min(1),
+  name: z.string().min(1),
+  semester: z.string().optional().default(''),
+  professor: z.string().optional().default(''),
+  color: z.string().optional().default('#6366f1'),
+});
+
+export const settingsSchema = z.object({
+  focus_defaults: z.object({
+    pomodoro_duration: z.number().min(1).max(120).optional(),
+    break_duration: z.number().min(1).max(60).optional(),
+    long_break_duration: z.number().min(1).max(60).optional(),
+    sessions_before_long_break: z.number().min(1).max(10).optional(),
+  }).optional(),
+  working_days: z.array(z.number().min(0).max(6)).optional(),
+  custom_periods: z.array(z.object({
+    name: z.string().min(1),
+    start_time: z.string().regex(/^\d{2}:\d{2}$/),
+    end_time: z.string().regex(/^\d{2}:\d{2}$/),
+  })).optional(),
+  timezone: z.string().optional(),
+  attendance_threshold: z.number().min(0).max(100).optional(),
+  attendance_count_bunks_as_absent: z.boolean().optional(),
+});
+
+export const collegeCalendarEventSchema = z.object({
+  student_id: z.string().min(1),
+  title: z.string().min(1),
+  type: z.enum(['semester', 'exam', 'holiday', 'event']).optional().default('event'),
+  start_date: z.string(),
+  end_date: z.string().optional().default(''),
+  color: z.string().optional().default('#89AACC'),
+});
+
+export const topicResourceSchema = z.object({
+  topic_id: z.string().optional(),
+  title: z.string().min(1, 'Title is required'),
+  url: z.string().optional().default(''),
+  type: z.enum(['link', 'youtube', 'pdf', 'note', 'tool']).optional().default('link'),
+  description: z.string().optional().default(''),
 });
 
 export const aiChatSchema = z.object({

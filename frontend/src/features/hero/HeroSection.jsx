@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hls from 'hls.js';
+import videoFile from "../../../238264_medium.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +22,7 @@ function HeroSection() {
     const video = videoRef.current;
     if (!video) return;
 
-    const src = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8';
+    const src = videoFile;
 
     let hlsInstance = null;
 

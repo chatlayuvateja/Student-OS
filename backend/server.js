@@ -23,6 +23,10 @@ import aiRoutes from './routes/ai.routes.js';
 import backupRoutes from './routes/backup.routes.js';
 import collegeCalendarRoutes from './routes/collegeCalendar.routes.js';
 import attendanceSettingsRoutes from './routes/attendanceSettings.routes.js';
+import settingsRoutes from './routes/settings.routes.js';
+import subjectsRoutes from './routes/subjects.routes.js';
+import topicResourcesRoutes from './routes/topicResources.routes.js';
+import workingDaysRoutes from './routes/workingDays.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,6 +60,10 @@ app.use('/college-calendar', collegeCalendarRoutes);
 app.use('/attendance-settings', attendanceSettingsRoutes);
 app.use('/resources', resourcesRoutes);
 app.use('/ai', aiRoutes);
+app.use('/settings', settingsRoutes);
+app.use('/subjects', subjectsRoutes);
+app.use('/roadmaps/topic', topicResourcesRoutes);
+app.use('/working-days', workingDaysRoutes);
 app.use('/backup', backupRoutes);
 
 // Health check

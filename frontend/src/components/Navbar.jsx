@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const navLinks = [
   { id: 'hero', label: 'Home' },
+  { id: 'profile', label: 'Profile' },
   { id: 'timetable', label: 'Schedule' },
   { id: 'notes', label: 'Notes' },
   { id: 'habits', label: 'Habits' },
   { id: 'aichat', label: 'AI' },
-  { id: 'profile', label: 'Profile' },
 ];
 
-function Navbar() {
+function Navbar({ onToggleSettings }) {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -105,6 +105,20 @@ function Navbar() {
               ) : (
                 <path d="M2 4H14M2 8H14M2 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               )}
+            </svg>
+          </button>
+
+          <div className="w-px h-5 bg-stroke mx-1" />
+
+          {/* Settings gear */}
+          <button
+            onClick={onToggleSettings}
+            className="relative w-8 h-8 flex items-center justify-center rounded-full text-muted hover:text-text-primary hover:bg-stroke/30 transition-all group"
+            title="Settings"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:rotate-90">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
             </svg>
           </button>
 

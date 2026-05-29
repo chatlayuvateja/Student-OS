@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useNotes, useCreateNote, useUpdateNote, useDeleteNote, useUploadNoteFile } from '../../hooks/api';
+import { useNotes, useCreateNote, useUpdateNote, useDeleteNote, useUploadNoteFile, useResources, useProfile } from '../../hooks/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,7 +10,7 @@ function NotesSection() {
   const titleRef = useRef(null);
   const gridRef = useRef(null);
   const [editNote, setEditNote] = useState(null);
-  const [form, setForm] = useState({ title: '', content: '', subject: 'General', color: '#89AACC', tags_array: [] });
+  const [form, setForm] = useState({ title: '', content: '', subject: 'General', color: '#89AACC', tags_array: [], resource_links: [] });
   const [showCreate, setShowCreate] = useState(false);
 
   // File upload states
@@ -19,11 +19,22 @@ function NotesSection() {
   const [uploadFile, setUploadFile] = useState(null);
   const fileUploadRef = useRef(null);
 
+  // Attach resource states
+  const [showResourcePicker, setShowResourcePicker] = useState(false);
+  const [attachedResources, setAttachedResources] = useState([]);
+
   const { data: notes = [] } = useNotes();
+  const { data: profile } = useProfile();
+  const { data: allResources = [] } = useResources();
   const createNote = useCreateNote();
   const updateNote = useUpdateNote();
   const deleteNote = useDeleteNote();
   const uploadNoteFile = useUploadNoteFile();
+
+  const subjectOptions = React.useMemo(() => {
+    if (!profile?.subjects || !Array.isArray(profile.subjects)) return [];
+    return profile.subjects.map(s => typeof s === 'string' ? { name: s, color: '#89AACC' } : s);
+  }, [profile]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -36,22 +47,32 @@ function NotesSection() {
 
   const handleCreate = () => {
     setEditNote(null);
-    setForm({ title: '', content: '', subject: 'General', color: '#89AACC', tags_array: [] });
+    setForm({ title: '', content: '', subject: 'General', color: '#89AACC', tags_array: [], resource_links: [] });
+    setAttachedResources([]);
     setShowCreate(true);
   };
 
   const handleEdit = (note) => {
     setEditNote(note);
-    setForm({ title: note.title || '', content: note.content || '', subject: note.subject || 'General', color: note.color || '#89AACC', tags_array: note.tags_array || [] });
+    setForm({
+      title: note.title || '',
+      content: note.content || '',
+      subject: note.subject || 'General',
+      color: note.color || '#89AACC',
+      tags_array: note.tags_array || [],
+      resource_links: note.resource_links || [],
+    });
+    setAttachedResources(note.resource_links || []);
     setShowCreate(true);
   };
 
   const handleSave = (e) => {
     e.preventDefault();
+    const payload = { ...form, resource_links: attachedResources };
     if (editNote) {
-      updateNote.mutate({ id: editNote.id, ...form });
+      updateNote.mutate({ id: editNote.id, ...payload });
     } else {
-      createNote.mutate(form);
+      createNote.mutate(payload);
     }
     setShowCreate(false);
   };
@@ -59,6 +80,16 @@ function NotesSection() {
   const handledDelete = (note) => {
     if (confirm('Delete this note?')) deleteNote.mutate(note.id);
   };
+
+  const toggleResource = (resource) => {
+    setAttachedResources(prev => {
+      const exists = prev.find(r => r.id === resource.id);
+      if (exists) return prev.filter(r => r.id !== resource.id);
+      return [...prev, { id: resource.id, title: resource.title, url: resource.url, type: resource.type }];
+    });
+  };
+
+  const typeIcons = { link: '🔗', youtube: '🎥', pdf: '📄', note: '📝', tool: '🛠️' };
 
   return (
     <section ref={sectionRef} className="relative py-20 lg:py-28 bg-bg">
@@ -113,6 +144,18 @@ function NotesSection() {
               {note.note_type === 'file' && (
                 <p className="text-[11px] text-muted/50 mt-1 truncate">{note.file_original_name}</p>
               )}
+              {/* Attached resources */}
+              {note.resource_links?.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {note.resource_links.map((r, i) => (
+                    <a key={i} href={r.url} target="_blank" rel="noreferrer"
+                      onClick={e => e.stopPropagation()}
+                      className="text-[9px] px-1.5 py-0.5 rounded-md bg-stroke/50 text-muted hover:text-[#89AACC] transition-all flex items-center gap-1">
+                      {typeIcons[r.type] || '🔗'} {r.title?.slice(0, 15)}
+                    </a>
+                  ))}
+                </div>
+              )}
               {note.tags_array?.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-3">
                   {note.tags_array.map((tag, i) => (
@@ -135,10 +178,49 @@ function NotesSection() {
             <form onSubmit={handleSave} className="space-y-4">
               <input type="text" placeholder="Title" value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} required
                 className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
-              <input type="text" placeholder="Subject" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+              <div>
+                <label className="text-[10px] text-muted uppercase tracking-wider block mb-1.5">Subject</label>
+                {subjectOptions.length > 0 ? (
+                  <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary focus:outline-none focus:border-text-primary/30 transition-all">
+                    <option value="General">General</option>
+                    {subjectOptions.map((s, i) => (
+                      <option key={i} value={s.name}>{s.name}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input type="text" placeholder="Subject" value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                )}
+              </div>
               <textarea rows={5} placeholder="Write your notes here..." value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))}
                 className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all resize-none" />
+
+              {/* Attach Resources */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] uppercase tracking-wider text-muted">Attached Resources</span>
+                  <button type="button" onClick={() => setShowResourcePicker(true)}
+                    className="text-[10px] text-[#89AACC] hover:text-[#4E85BF] transition-all">
+                    + Attach Resource
+                  </button>
+                </div>
+                {attachedResources.length > 0 ? (
+                  <div className="flex flex-wrap gap-1.5">
+                    {attachedResources.map((r, i) => (
+                      <span key={i}
+                        className="text-[10px] px-2 py-1 rounded-lg bg-stroke/50 text-text-primary flex items-center gap-1.5">
+                        {typeIcons[r.type] || '🔗'} {r.title?.slice(0, 18)}
+                        <button type="button" onClick={() => toggleResource(r)}
+                          className="text-muted hover:text-red-400 ml-0.5">✕</button>
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[10px] text-muted/50 italic">No resources attached yet.</p>
+                )}
+              </div>
+
               <div className="flex gap-3 pt-2">
                 <button type="submit" disabled={createNote.isPending || updateNote.isPending}
                   className="flex-1 py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90 disabled:opacity-40">
@@ -150,6 +232,50 @@ function NotesSection() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Resource Picker Modal */}
+      {showResourcePicker && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowResourcePicker(false)}>
+          <div className="glass-card-strong p-8 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-xl font-display italic text-text-primary mb-1">Attach Resource</h3>
+            <p className="text-xs text-muted mb-5">Select resources to link to this note.</p>
+
+            {allResources.length === 0 ? (
+              <p className="text-sm text-muted italic text-center py-6">No resources available. Add some in the Resources section first.</p>
+            ) : (
+              <div className="space-y-2 max-h-64 overflow-y-auto mb-4">
+                {allResources.map(resource => {
+                  const isAttached = attachedResources.some(r => r.id === resource.id);
+                  return (
+                    <div key={resource.id}
+                      onClick={() => toggleResource(resource)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl cursor-pointer transition-all border ${
+                        isAttached ? 'border-[#89AACC]/40 bg-[#89AACC]/5' : 'border-transparent bg-surface hover:bg-stroke/50'
+                      }`}
+                    >
+                      <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                        isAttached ? 'border-[#89AACC] bg-[#89AACC]' : 'border-stroke'
+                      }`}>
+                        {isAttached && <span className="text-[8px] text-bg">✓</span>}
+                      </div>
+                      <span className="text-xs">{typeIcons[resource.type] || '🔗'}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm text-text-primary truncate">{resource.title}</p>
+                        {resource.subject_tag && <p className="text-[9px] text-muted">{resource.subject_tag}</p>}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <button type="button" onClick={() => setShowResourcePicker(false)}
+              className="w-full py-3 rounded-xl text-sm font-medium text-bg bg-text-primary transition-all hover:opacity-90">
+              Done
+            </button>
           </div>
         </div>
       )}
@@ -195,9 +321,22 @@ function NotesSection() {
               <input type="text" placeholder="Note title" value={uploadForm.title}
                 onChange={e => setUploadForm(prev => ({ ...prev, title: e.target.value }))}
                 className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
-              <input type="text" placeholder="Subject" value={uploadForm.subject}
-                onChange={e => setUploadForm(prev => ({ ...prev, subject: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+              <div>
+                <label className="text-[10px] text-muted uppercase tracking-wider block mb-1.5">Subject</label>
+                {subjectOptions.length > 0 ? (
+                  <select value={uploadForm.subject} onChange={e => setUploadForm(prev => ({ ...prev, subject: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary focus:outline-none focus:border-text-primary/30 transition-all">
+                    <option value="">General</option>
+                    {subjectOptions.map((s, i) => (
+                      <option key={i} value={s.name}>{s.name}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input type="text" placeholder="Subject" value={uploadForm.subject}
+                    onChange={e => setUploadForm(prev => ({ ...prev, subject: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-xl text-sm bg-surface border border-stroke text-text-primary placeholder-muted focus:outline-none focus:border-text-primary/30 transition-all" />
+                )}
+              </div>
             </div>
 
             <div className="flex gap-3">

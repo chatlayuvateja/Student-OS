@@ -43,6 +43,19 @@
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted));
   }
+
+  /* Form inputs — ensure readable text against dark surface backgrounds */
+  input,
+  textarea,
+  select {
+    color: hsl(var(--text));
+    background-color: hsl(var(--surface));
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: hsl(var(--muted));
+  }
 }
 
 /* ─── Accent Gradient Utility ─── */
